@@ -1,62 +1,77 @@
 import React, { useState } from 'react'
-import { Link } from '@remix-run/react'
-import { Menu, X } from 'lucide-react'
+import {
+  Navbar,
+  NavbarBrand,
+  NavbarContent,
+  NavbarItem,
+  NavbarMenuItem,
+  NavbarMenu,
+  NavbarMenuToggle,
+  Link as MenuLink,
+} from '@nextui-org/react'
 
 import { routeNames } from 'app/route-names'
 
 export const NavHeader: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false)
-  const toggleMenu = () => setIsOpen(!isOpen)
 
   return (
-    <header className="text-black">
-      <nav className="container mx-auto px-6 py-4 flex items-center justify-between">
-        <Link to="/" className="flex items-center text-xl font-bold">
-          <img
-            src="/logo.png"
-            alt="Forerunners"
-            className="w-auto h-8 md:h-10"
-          />
-        </Link>
-
-        <div className="hidden md:flex space-x-6">
-          <Link
-            to={routeNames.root}
-            className="text-light-blue hover:text-gray-300 font-bold"
+    <Navbar shouldHideOnScroll onMenuOpenChange={setIsOpen}>
+      <NavbarBrand>
+        <MenuLink href={routeNames.root}>
+          <img src="/logo.png" alt="Forerunners" className="h-8 md:h-10" />
+        </MenuLink>
+      </NavbarBrand>
+      <NavbarContent className="hidden sm:flex gap-x-10" justify="center">
+        <NavbarItem>
+          <MenuLink
+            href={routeNames.about}
+            className="text-sky-700 font-bold p-2 after:bg-light-blue after:absolute after:h-1 after:w-0 after:bottom-0 
+            after:left-0 hover:after:w-full after:transition-all after:duration-300 cursor-pointer"
           >
             HOME
-          </Link>
-          <Link
-            to={routeNames.about}
-            className="text-light-blue hover:text-gray-300 font-bold"
+          </MenuLink>
+        </NavbarItem>
+        <NavbarItem>
+          <MenuLink
+            href={routeNames.about}
+            className="text-sky-700 font-bold p-2 after:bg-light-blue after:absolute after:h-1 after:w-0 after:bottom-0 
+            after:left-0 hover:after:w-full after:transition-all after:duration-300 cursor-pointer"
+          >
+            COMPANY DIRECTORIES
+          </MenuLink>
+        </NavbarItem>
+        <NavbarItem>
+          <MenuLink
+            href={routeNames.about}
+            className="text-sky-700 font-bold p-2 after:bg-light-blue after:absolute after:h-1 after:w-0 after:bottom-0 
+            after:left-0 hover:after:w-full after:transition-all after:duration-300 cursor-pointer"
           >
             ABOUT
-          </Link>
-        </div>
-
-        <button onClick={toggleMenu} className="md:hidden">
-          {isOpen ? <X size={24} /> : <Menu size={24} />}
-        </button>
-      </nav>
-
-      {isOpen && (
-        <div className="md:hidden">
-          <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-            <Link
-              to={routeNames.root}
-              className="text-light-blue block px-3 py-2 rounded-md hover:bg-gray-100"
-            >
-              HOME
-            </Link>
-            <Link
-              to={routeNames.about}
-              className="text-light-blue block px-3 py-2 rounded-md hover:bg-gray-100"
-            >
-              ABOUT
-            </Link>
-          </div>
-        </div>
-      )}
-    </header>
+          </MenuLink>
+        </NavbarItem>
+      </NavbarContent>
+      <NavbarContent className="sm:hidden" justify="end">
+        <NavbarMenuToggle aria-label={isOpen ? 'Close menu' : 'Open menu'} />
+      </NavbarContent>
+      <NavbarMenu className="flex md:hidden gap-y-5">
+        <NavbarMenuItem>
+          <MenuLink
+            href={routeNames.root}
+            className="text-sky-700 hover:text-gray-300 font-bold"
+          >
+            HOME
+          </MenuLink>
+        </NavbarMenuItem>
+        <NavbarMenuItem>
+          <MenuLink
+            href={routeNames.about}
+            className="text-sky-700 hover:text-gray-300 font-bold"
+          >
+            ABOUT
+          </MenuLink>
+        </NavbarMenuItem>
+      </NavbarMenu>
+    </Navbar>
   )
 }

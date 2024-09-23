@@ -4,9 +4,9 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
-  LiveReload,
 } from '@remix-run/react'
 import type { LinksFunction } from '@remix-run/node'
+import { NextUIProvider } from '@nextui-org/react'
 
 import './index.css'
 
@@ -33,10 +33,11 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Links />
       </head>
       <body>
-        <main>{children}</main>
-        <ScrollRestoration />
-        <Scripts />
-        <LiveReload />
+        <NextUIProvider>
+          <main>{children}</main>
+          <ScrollRestoration />
+          <Scripts />
+        </NextUIProvider>
       </body>
     </html>
   )
