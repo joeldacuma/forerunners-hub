@@ -1,3 +1,6 @@
+.vscode/*
+.vscode/extensions.json
+
 /frontend/node_modules
 
 /frontend/.cache
