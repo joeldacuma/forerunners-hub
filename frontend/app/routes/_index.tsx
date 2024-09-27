@@ -1,6 +1,5 @@
 import { type MetaFunction, type LoaderFunction, json } from '@remix-run/node'
 import { useLoaderData } from '@remix-run/react'
-import { NavHeader } from 'app/common'
 import { axiosInstance } from 'app/utils'
 import {
   BannerSection,
@@ -8,7 +7,7 @@ import {
   CompanyDirectorySection,
   AboutUsSection,
 } from 'app/components/home'
-import { Footer } from 'app/common'
+import { Footer, NavHeader } from 'app/common'
 import { ScrollspyProvider } from '~/common/providers'
 
 export const meta: MetaFunction = () => {

@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Button, Link } from '@nextui-org/react'
+import { Button } from '@nextui-org/react'
 import { ImageProps } from 'app/common/models'
 
 interface AboutUsProps {
@@ -26,7 +26,7 @@ export const AboutUsSection: React.FC<AboutUsProps> = ({
           <img
             key={index}
             src={src.image.url}
-            alt={`Gallery image ${index + 1}`}
+            alt={`Gallery-${index + 1}`}
             className="w-full h-full object-cover rounded-lg"
           />
         ))}

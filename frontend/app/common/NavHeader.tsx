@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import {
   Navbar,
   NavbarBrand,
@@ -19,19 +19,19 @@ interface NavHeaderProps {
 
 export const NavHeader: React.FC<NavHeaderProps> = ({ menus }) => {
   const [isOpen, setIsOpen] = useState(false)
-  const { activeSection, setActiveSection } = useScrollSpy()
+  const { setActiveSection } = useScrollSpy()
 
-  const handleLinkClick = (
-    e: React.MouseEvent<HTMLAnchorElement>,
-    id: string
-  ) => {
-    e.preventDefault()
-    const element = document.getElementById(id)
-    if (element) {
-      setActiveSection(id)
-      element.scrollIntoView({ behavior: 'smooth' })
-    }
-  }
+  const handleLinkClick = useCallback(
+    (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
+      e.preventDefault()
+      const element = document.getElementById(id)
+      if (element) {
+        setActiveSection(id)
+        element.scrollIntoView({ behavior: 'smooth' })
+      }
+    },
+    [setActiveSection]
+  )
 
   return (
     <Navbar shouldHideOnScroll onMenuOpenChange={setIsOpen} className="py-4">
@@ -46,8 +46,8 @@ export const NavHeader: React.FC<NavHeaderProps> = ({ menus }) => {
             <MenuLink
               href={`#${menu.uid}`}
               onClick={(e) => handleLinkClick(e, menu.uid)}
-              className="text-sky-700 text-sm font-bold p-2 after:bg-light-blue after:absolute after:h-1 after:w-0 after:bottom-0 
-          after:left-0 hover:after:w-full after:transition-all after:duration-300 cursor-pointer"
+              className={`text-sky-700 text-sm font-bold p-2 after:bg-light-blue after:absolute after:h-1 after:w-0 after:bottom-0 
+          after:left-0 hover:after:w-full after:transition-all after:duration-300 cursor-pointer`}
             >
               {menu.title.toUpperCase()}
             </MenuLink>
@@ -72,12 +72,21 @@ export const NavHeader: React.FC<NavHeaderProps> = ({ menus }) => {
           <NavbarMenuItem key={menu.title}>
             <MenuLink
               href={menu.url}
-              className="text-sky-700 hover:text-gray-300 font-bold"
+              className={`text-sky-700 text-sm font-bold p-2 after:bg-light-blue after:absolute after:h-1 after:w-0 after:bottom-0 
+                after:left-0 hover:after:w-full after:transition-all after:duration-300 cursor-pointer`}
             >
               {menu.title.toUpperCase()}
             </MenuLink>
           </NavbarMenuItem>
         ))}
+        <NavbarItem>
+          <Button
+            className="bg-light-violet text-white font-bold"
+            variant="flat"
+          >
+            Request Demo
+          </Button>
+        </NavbarItem>
       </NavbarMenu>
     </Navbar>
   )

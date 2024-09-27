@@ -82,18 +82,26 @@ export const Footer: React.FC<FooterProps> = ({ data }) => {
         <div className="mt-8 pt-8 border-t border-gray-200">
           <div className="flex flex-col sm:flex-row justify-between items-center">
             <div className="flex space-x-4 mb-4 sm:mb-0">
-              <Link href={data.facebookUrl} aria-label="Facebook">
-                <FacebookIcon className="text-light-blue w-6 h-6" />
-              </Link>
-              <Link href={data.twitterUrl} aria-label="Twitter">
-                <TwitterIcon className="text-light-blue w-6 h-6" />
-              </Link>
-              <Link href={data.instagramUrl} aria-label="Instagram">
-                <InstagramIcon className="text-light-blue w-6 h-6" />
-              </Link>
-              <Link href={data.linkedinUrl} aria-label="LinkedIn">
-                <LinkedinIcon className="text-light-blue w-6 h-6" />
-              </Link>
+              {data.facebookUrl && (
+                <Link href={data.facebookUrl} aria-label="Facebook">
+                  <FacebookIcon className="text-light-blue w-6 h-6" />
+                </Link>
+              )}
+              {data.twitterUrl && (
+                <Link href={data.twitterUrl} aria-label="Twitter">
+                  <TwitterIcon className="text-light-blue w-6 h-6" />
+                </Link>
+              )}
+              {data.instagramUrl && (
+                <Link href={data.instagramUrl} aria-label="Instagram">
+                  <InstagramIcon className="text-light-blue w-6 h-6" />
+                </Link>
+              )}
+              {data.linkedinUrl && (
+                <Link href={data.linkedinUrl} aria-label="LinkedIn">
+                  <LinkedinIcon className="text-light-blue w-6 h-6" />
+                </Link>
+              )}
             </div>
             <p className="text-sm text-center sm:text-right">
               {data.copyrightText}

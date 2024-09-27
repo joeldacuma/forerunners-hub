@@ -13,7 +13,6 @@ export const CompanyDirectorySection: React.FC<CompanyDirectoryProps> = ({
   title,
   description,
   buttonText,
-  buttonUrl,
 }) => {
   return (
     <div className="relative min-h-screen flex items-center justify-center overflow-hidden">
