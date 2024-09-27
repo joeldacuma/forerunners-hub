@@ -14,7 +14,8 @@ export default {
     },
     extend: {
       colors: {
-        'light-blue': '#38b6ff'
+        'light-blue': '#38b6ff',
+        'light-violet': '#b55ef1',
       },
       fontFamily: {
         montserrat: ['Montserrat', 'sans-serif'],
@@ -32,5 +33,14 @@ export default {
     },
   },
   darkMode: 'class',
-  plugins: [nextui()],
+  plugins: [nextui({
+    defaultTheme: 'light',
+    themes: {
+      light: {
+        colors: {
+          focus: '#38b6ff'
+        }  
+      }
+    },
+  })],
 } satisfies Config

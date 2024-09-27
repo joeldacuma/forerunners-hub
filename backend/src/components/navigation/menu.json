@@ -1,0 +1,33 @@
+{
+  "collectionName": "components_navigation_menus",
+  "info": {
+    "displayName": "Menu",
+    "icon": "bulletList",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "url": {
+      "type": "string",
+      "required": true
+    },
+    "subMenu": {
+      "type": "component",
+      "repeatable": true,
+      "component": "navigation.sub-menu"
+    },
+    "isActive": {
+      "type": "boolean",
+      "default": true,
+      "required": true
+    },
+    "uid": {
+      "type": "string",
+      "required": true
+    }
+  }
+}

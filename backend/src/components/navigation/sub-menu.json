@@ -1,0 +1,16 @@
+{
+  "collectionName": "components_navigation_sub_menus",
+  "info": {
+    "displayName": "sub-menu",
+    "icon": "apps"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "url": {
+      "type": "string"
+    }
+  }
+}

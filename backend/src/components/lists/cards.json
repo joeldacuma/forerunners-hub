@@ -1,0 +1,23 @@
+{
+  "collectionName": "components_lists_cards",
+  "info": {
+    "displayName": "Cards",
+    "icon": "server",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "Title": {
+      "type": "string"
+    },
+    "Description": {
+      "type": "text"
+    },
+    "ActionButtonText": {
+      "type": "string"
+    },
+    "ActionButtonUrl": {
+      "type": "string"
+    }
+  }
+}

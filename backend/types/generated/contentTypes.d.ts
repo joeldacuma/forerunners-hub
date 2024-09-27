@@ -1,5 +1,46 @@
 import type { Struct, Schema } from '@strapi/strapi';
 
+export interface ApiHomeHome extends Struct.SingleTypeSchema {
+  collectionName: 'homes';
+  info: {
+    singularName: 'home';
+    pluralName: 'homes';
+    displayName: 'Home';
+    description: '';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    menu: Schema.Attribute.Component<'navigation.menu', true>;
+    bannerTitle: Schema.Attribute.String;
+    bannerActionText: Schema.Attribute.String;
+    bannerDescription: Schema.Attribute.Text;
+    products: Schema.Attribute.Component<'lists.cards', true>;
+    companySectionTitle: Schema.Attribute.String;
+    companyButtonText: Schema.Attribute.String;
+    companyButtonUrl: Schema.Attribute.String;
+    companySectionDescription: Schema.Attribute.Text;
+    companyBackgroundImages: Schema.Attribute.Component<'lists.gallery', true>;
+    aboutUsSectionTitle: Schema.Attribute.String;
+    aboutUsDescription: Schema.Attribute.Text;
+    aboutUsSectionText: Schema.Attribute.String;
+    aboutUsSectionUrl: Schema.Attribute.String;
+    aboutUsDescription2: Schema.Attribute.Text;
+    aboutUsDescription3: Schema.Attribute.Text;
+    Footer: Schema.Attribute.Component<'footer.main-footer', false>;
+    createdAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    publishedAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String;
+    localizations: Schema.Attribute.Relation<'oneToMany', 'api::home.home'>;
+  };
+}
+
 export interface PluginUploadFile extends Struct.CollectionTypeSchema {
   collectionName: 'files';
   info: {
@@ -850,6 +891,7 @@ export interface AdminTransferTokenPermission
 declare module '@strapi/strapi' {
   export module Public {
     export interface ContentTypeSchemas {
+      'api::home.home': ApiHomeHome;
       'plugin::upload.file': PluginUploadFile;
       'plugin::upload.folder': PluginUploadFolder;
       'plugin::i18n.locale': PluginI18NLocale;

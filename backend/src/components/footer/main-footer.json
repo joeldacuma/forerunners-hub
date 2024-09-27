@@ -1,0 +1,50 @@
+{
+  "collectionName": "components_footer_main_footers",
+  "info": {
+    "displayName": "Main Footer",
+    "icon": "server",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "copyrightText": {
+      "type": "string"
+    },
+    "Company": {
+      "type": "component",
+      "repeatable": true,
+      "component": "navigation.sub-menu"
+    },
+    "Products": {
+      "type": "component",
+      "repeatable": true,
+      "component": "navigation.sub-menu"
+    },
+    "Support": {
+      "type": "component",
+      "repeatable": true,
+      "component": "navigation.sub-menu"
+    },
+    "subscribeTitle": {
+      "type": "string"
+    },
+    "subscribeDescription": {
+      "type": "string"
+    },
+    "subscribeButtonText": {
+      "type": "string"
+    },
+    "facebookUrl": {
+      "type": "string"
+    },
+    "twitterUrl": {
+      "type": "string"
+    },
+    "instagramUrl": {
+      "type": "string"
+    },
+    "linkedinUrl": {
+      "type": "string"
+    }
+  }
+}

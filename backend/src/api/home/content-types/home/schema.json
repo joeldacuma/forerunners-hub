@@ -1,0 +1,75 @@
+{
+  "kind": "singleType",
+  "collectionName": "homes",
+  "info": {
+    "singularName": "home",
+    "pluralName": "homes",
+    "displayName": "Home",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "menu": {
+      "type": "component",
+      "repeatable": true,
+      "component": "navigation.menu"
+    },
+    "bannerTitle": {
+      "type": "string"
+    },
+    "bannerActionText": {
+      "type": "string"
+    },
+    "bannerDescription": {
+      "type": "text"
+    },
+    "products": {
+      "type": "component",
+      "repeatable": true,
+      "component": "lists.cards"
+    },
+    "companySectionTitle": {
+      "type": "string"
+    },
+    "companyButtonText": {
+      "type": "string"
+    },
+    "companyButtonUrl": {
+      "type": "string"
+    },
+    "companySectionDescription": {
+      "type": "text"
+    },
+    "companyBackgroundImages": {
+      "type": "component",
+      "repeatable": true,
+      "component": "lists.gallery"
+    },
+    "aboutUsSectionTitle": {
+      "type": "string"
+    },
+    "aboutUsDescription": {
+      "type": "text"
+    },
+    "aboutUsSectionText": {
+      "type": "string"
+    },
+    "aboutUsSectionUrl": {
+      "type": "string"
+    },
+    "aboutUsDescription2": {
+      "type": "text"
+    },
+    "aboutUsDescription3": {
+      "type": "text"
+    },
+    "Footer": {
+      "type": "component",
+      "repeatable": false,
+      "component": "footer.main-footer"
+    }
+  }
+}
