@@ -49,6 +49,7 @@ export default function Index() {
             title={home.companySectionTitle}
             description={home.companySectionDescription}
             buttonText={home.companyButtonText}
+            buttonUrl={home.companyButtonUrl}
           />
         </div>
         <div id="about">

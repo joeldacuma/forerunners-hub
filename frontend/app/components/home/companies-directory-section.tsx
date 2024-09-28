@@ -1,6 +1,7 @@
 import { Button } from '@nextui-org/react'
 import { ChevronRight } from 'lucide-react'
 import React from 'react'
+import { useNavigate } from '@remix-run/react'
 
 interface CompanyDirectoryProps {
   title: string
@@ -13,7 +14,10 @@ export const CompanyDirectorySection: React.FC<CompanyDirectoryProps> = ({
   title,
   description,
   buttonText,
+  buttonUrl,
 }) => {
+  const navigate = useNavigate()
+
   return (
     <div className="relative min-h-screen flex items-center justify-center overflow-hidden">
       <div className="absolute inset-0 z-0">
@@ -33,8 +37,9 @@ export const CompanyDirectorySection: React.FC<CompanyDirectoryProps> = ({
         </p>
         <div>
           <Button
+            onClick={() => navigate(`${buttonUrl}`)}
             size="lg"
-            className="text-base sm:text-lg px-6 sm:px-8 py-2 sm:py-3"
+            className="text-base font-bold text-sky-700 sm:text-lg px-6 sm:px-8 py-2 sm:py-3"
           >
             {buttonText}
             <ChevronRight className="ml-2 h-4 w-4 sm:h-5 sm:w-5" />
