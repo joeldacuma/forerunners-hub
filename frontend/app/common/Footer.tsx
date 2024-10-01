@@ -7,8 +7,25 @@ import {
   TwitterIcon,
 } from 'lucide-react'
 import { FooterProps } from 'app/common/models'
+import { Form, useActionData } from '@remix-run/react'
+import {} from '@remix-run/node'
 
-export const Footer: React.FC<FooterProps> = ({ data }) => {
+interface ExtendedFooterProps extends FooterProps {
+  actionData?: {
+    error?: string
+    success?: boolean
+    message?: string
+  }
+  formAction: string
+}
+
+export const Footer: React.FC<ExtendedFooterProps> = ({
+  data,
+  actionData,
+  formAction,
+}) => {
+  const formActionData = useActionData<typeof actionData>()
+
   return (
     <div className="bg-gray-100 text-gray-600 py-12">
       <div className="container mx-auto px-4">
@@ -62,21 +79,28 @@ export const Footer: React.FC<FooterProps> = ({ data }) => {
               {data.subscribeTitle}
             </h2>
             <p className="mb-4">{data.subscribeDescription}</p>
-            <form onSubmit={(e) => e.preventDefault()} className="space-y-2">
+            <Form method="post" action={formAction} className="space-y-2">
               <Input
                 type="email"
+                name="email"
                 variant="bordered"
                 placeholder="Enter your email..."
                 aria-label="Email for newsletter"
                 className="w-full sm:w-auto"
               />
+              {formActionData?.error && (
+                <em className="text-red-500">{formActionData.error}</em>
+              )}
+              {formActionData?.success && (
+                <em className="text-green-500">{formActionData.message}</em>
+              )}
               <Button
                 type="submit"
                 className="bg-light-violet text-white w-full"
               >
                 {data.subscribeButtonText}
               </Button>
-            </form>
+            </Form>
           </div>
         </div>
         <div className="mt-8 pt-8 border-t border-gray-200">

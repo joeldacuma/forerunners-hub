@@ -1,6 +1,12 @@
 import React, { useState } from 'react'
 import { motion } from 'framer-motion'
-import { Card, CardBody, CardFooter, CardHeader } from '@nextui-org/react'
+import {
+  Card,
+  CardBody,
+  CardFooter,
+  CardHeader,
+  Button,
+} from '@nextui-org/react'
 
 interface ProductProps {
   Title: string
@@ -47,10 +53,14 @@ export const ProductSection: React.FC<ProductSectionProps> = ({ data }) => {
                 <CardBody className="px-4 py-5">
                   <p>{card.Description}</p>
                 </CardBody>
-                <CardFooter className="px-4 py-3">
-                  <button className="text-sky-700 font-medium hover:underline">
+                <CardFooter className="text-center justify-center px-4 py-3">
+                  <Button
+                    variant="bordered"
+                    color="primary"
+                    className="w-full text-lg font-medium hover:underline"
+                  >
                     {card.ActionButtonText}
-                  </button>
+                  </Button>
                 </CardFooter>
               </Card>
             </motion.div>

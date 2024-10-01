@@ -61,6 +61,13 @@ export interface MenuProps {
   }[]
 }
 
+interface SubscribeActionResult {
+  errors?: {
+    email?: string
+  }
+  success?: boolean
+}
+
 export interface FooterProps {
   data: {
     copyrightText: string

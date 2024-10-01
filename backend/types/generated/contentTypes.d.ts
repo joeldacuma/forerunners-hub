@@ -1,46 +1,5 @@
 import type { Struct, Schema } from '@strapi/strapi';
 
-export interface ApiHomeHome extends Struct.SingleTypeSchema {
-  collectionName: 'homes';
-  info: {
-    singularName: 'home';
-    pluralName: 'homes';
-    displayName: 'Home';
-    description: '';
-  };
-  options: {
-    draftAndPublish: true;
-  };
-  attributes: {
-    menu: Schema.Attribute.Component<'navigation.menu', true>;
-    bannerTitle: Schema.Attribute.String;
-    bannerActionText: Schema.Attribute.String;
-    bannerDescription: Schema.Attribute.Text;
-    products: Schema.Attribute.Component<'lists.cards', true>;
-    companySectionTitle: Schema.Attribute.String;
-    companyButtonText: Schema.Attribute.String;
-    companyButtonUrl: Schema.Attribute.String;
-    companySectionDescription: Schema.Attribute.Text;
-    companyBackgroundImages: Schema.Attribute.Component<'lists.gallery', true>;
-    aboutUsSectionTitle: Schema.Attribute.String;
-    aboutUsDescription: Schema.Attribute.Text;
-    aboutUsSectionText: Schema.Attribute.String;
-    aboutUsSectionUrl: Schema.Attribute.String;
-    aboutUsDescription2: Schema.Attribute.Text;
-    aboutUsDescription3: Schema.Attribute.Text;
-    Footer: Schema.Attribute.Component<'footer.main-footer', false>;
-    createdAt: Schema.Attribute.DateTime;
-    updatedAt: Schema.Attribute.DateTime;
-    publishedAt: Schema.Attribute.DateTime;
-    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-    locale: Schema.Attribute.String;
-    localizations: Schema.Attribute.Relation<'oneToMany', 'api::home.home'>;
-  };
-}
-
 export interface PluginUploadFile extends Struct.CollectionTypeSchema {
   collectionName: 'files';
   info: {
@@ -526,6 +485,106 @@ export interface PluginUsersPermissionsUser
   };
 }
 
+export interface ApiCompanyDirectoryCompanyDirectory
+  extends Struct.SingleTypeSchema {
+  collectionName: 'company_directories';
+  info: {
+    singularName: 'company-directory';
+    pluralName: 'company-directories';
+    displayName: 'Company Directory';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    menu: Schema.Attribute.Component<'navigation.menu', true>;
+    createdAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    publishedAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::company-directory.company-directory'
+    >;
+  };
+}
+
+export interface ApiHomeHome extends Struct.SingleTypeSchema {
+  collectionName: 'homes';
+  info: {
+    singularName: 'home';
+    pluralName: 'homes';
+    displayName: 'Home';
+    description: '';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    menu: Schema.Attribute.Component<'navigation.menu', true>;
+    bannerTitle: Schema.Attribute.String;
+    bannerActionText: Schema.Attribute.String;
+    bannerDescription: Schema.Attribute.Text;
+    products: Schema.Attribute.Component<'lists.cards', true>;
+    companySectionTitle: Schema.Attribute.String;
+    companyButtonText: Schema.Attribute.String;
+    companyButtonUrl: Schema.Attribute.String;
+    companySectionDescription: Schema.Attribute.Text;
+    companyBackgroundImages: Schema.Attribute.Component<'lists.gallery', true>;
+    aboutUsSectionTitle: Schema.Attribute.String;
+    aboutUsDescription: Schema.Attribute.Text;
+    aboutUsSectionText: Schema.Attribute.String;
+    aboutUsSectionUrl: Schema.Attribute.String;
+    aboutUsDescription2: Schema.Attribute.Text;
+    aboutUsDescription3: Schema.Attribute.Text;
+    Footer: Schema.Attribute.Component<'footer.main-footer', false>;
+    createdAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    publishedAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String;
+    localizations: Schema.Attribute.Relation<'oneToMany', 'api::home.home'>;
+  };
+}
+
+export interface ApiNewsletterNewsletter extends Struct.CollectionTypeSchema {
+  collectionName: 'newsletters';
+  info: {
+    singularName: 'newsletter';
+    pluralName: 'newsletters';
+    displayName: 'Newsletters';
+    description: '';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    email: Schema.Attribute.Email & Schema.Attribute.Required;
+    active: Schema.Attribute.Boolean &
+      Schema.Attribute.Required &
+      Schema.Attribute.DefaultTo<true>;
+    createdAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    publishedAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::newsletter.newsletter'
+    >;
+  };
+}
+
 export interface AdminPermission extends Struct.CollectionTypeSchema {
   collectionName: 'admin_permissions';
   info: {
@@ -891,7 +950,6 @@ export interface AdminTransferTokenPermission
 declare module '@strapi/strapi' {
   export module Public {
     export interface ContentTypeSchemas {
-      'api::home.home': ApiHomeHome;
       'plugin::upload.file': PluginUploadFile;
       'plugin::upload.folder': PluginUploadFolder;
       'plugin::i18n.locale': PluginI18NLocale;
@@ -902,6 +960,9 @@ declare module '@strapi/strapi' {
       'plugin::users-permissions.permission': PluginUsersPermissionsPermission;
       'plugin::users-permissions.role': PluginUsersPermissionsRole;
       'plugin::users-permissions.user': PluginUsersPermissionsUser;
+      'api::company-directory.company-directory': ApiCompanyDirectoryCompanyDirectory;
+      'api::home.home': ApiHomeHome;
+      'api::newsletter.newsletter': ApiNewsletterNewsletter;
       'admin::permission': AdminPermission;
       'admin::user': AdminUser;
       'admin::role': AdminRole;
