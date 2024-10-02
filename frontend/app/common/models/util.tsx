@@ -51,6 +51,7 @@ export interface ImageProps {
 }
 
 export interface MenuProps {
+  id: number
   uid: string
   title: string
   url: string
@@ -59,13 +60,6 @@ export interface MenuProps {
     title: string
     url: string
   }[]
-}
-
-interface SubscribeActionResult {
-  errors?: {
-    email?: string
-  }
-  success?: boolean
 }
 
 export interface FooterProps {
@@ -91,4 +85,19 @@ export interface FooterProps {
     instagramUrl: string | undefined
     linkedinUrl: string | undefined
   }
+}
+
+export interface NewsLetterParams {
+  data: {
+    email: string
+    active: boolean
+  }
+}
+
+export interface ProductProps {
+  id: number
+  Title: string
+  Description: string
+  ActionButtonText: string
+  ActionButtonUrl: string
 }

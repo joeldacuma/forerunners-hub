@@ -10,7 +10,7 @@ import {
   Link as MenuLink,
   Button,
 } from '@nextui-org/react'
-import { MenuProps } from 'app/common/models'
+import { MenuProps, HomeAPIResponse } from 'app/common/models'
 import { useScrollSpy } from 'app/common/providers'
 
 interface NavHeaderProps {
@@ -41,16 +41,25 @@ export const NavHeader: React.FC<NavHeaderProps> = ({ menus }) => {
         </MenuLink>
       </NavbarBrand>
       <NavbarContent className="hidden sm:flex gap-x-10" justify="center">
-        {menus.map((menu) => (
+        {menus?.map((menu) => (
           <NavbarItem key={menu.title}>
-            <MenuLink
-              href={`#${menu.uid}`}
-              onClick={(e) => handleLinkClick(e, menu.uid)}
-              className={`text-sky-700 text-sm font-bold p-2 after:bg-light-blue after:absolute after:h-1 after:w-0 after:bottom-0 
+            {menu.url.includes('#') ? (
+              <MenuLink
+                onClick={(e) => handleLinkClick(e, menu.uid)}
+                className={`text-sky-700 text-sm font-bold p-2 after:bg-light-blue after:absolute after:h-1 after:w-0 after:bottom-0 
           after:left-0 hover:after:w-full after:transition-all after:duration-300 cursor-pointer`}
-            >
-              {menu.title.toUpperCase()}
-            </MenuLink>
+              >
+                {menu.title.toUpperCase()}
+              </MenuLink>
+            ) : (
+              <MenuLink
+                href={`${menu.url}`}
+                className={`text-sky-700 text-sm font-bold p-2 after:bg-light-blue after:absolute after:h-1 after:w-0 after:bottom-0 
+          after:left-0 hover:after:w-full after:transition-all after:duration-300 cursor-pointer`}
+              >
+                {menu.title.toUpperCase()}
+              </MenuLink>
+            )}
           </NavbarItem>
         ))}
       </NavbarContent>
@@ -68,7 +77,7 @@ export const NavHeader: React.FC<NavHeaderProps> = ({ menus }) => {
         <NavbarMenuToggle aria-label={isOpen ? 'Close menu' : 'Open menu'} />
       </NavbarContent>
       <NavbarMenu className="flex md:hidden gap-y-5">
-        {menus.map((menu) => (
+        {menus?.map((menu) => (
           <NavbarMenuItem key={menu.title}>
             <MenuLink
               href={menu.url}

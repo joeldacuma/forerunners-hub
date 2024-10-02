@@ -1,4 +1,5 @@
 import { redirect, LoaderFunction } from '@remix-run/node'
+import { Spinner } from '@nextui-org/react'
 
 export const loader: LoaderFunction = async () => {
   return redirect('/home')
@@ -7,7 +8,9 @@ export const loader: LoaderFunction = async () => {
 export default function Index() {
   return (
     <>
-      <div>Loading...</div>
+      <div>
+        <Spinner />
+      </div>
     </>
   )
 }

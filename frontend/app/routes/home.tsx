@@ -14,6 +14,11 @@ import {
 } from 'app/components/home'
 import { Footer, NavHeader } from 'app/common'
 import { ScrollspyProvider } from '~/common/providers'
+import { NewsLetterParams, HomeAPIResponse } from '~/common/models'
+
+interface HomeData {
+  data?: HomeAPIResponse
+}
 
 export const meta: MetaFunction = () => {
   return [
@@ -24,7 +29,7 @@ export const meta: MetaFunction = () => {
 }
 
 export const loader: LoaderFunction = async () => {
-  const homeResponse = await axiosInstance.get('/home?pLevel')
+  const homeResponse = await axiosInstance.get<HomeData>('/home?pLevel')
   const { data } = homeResponse
   return json({
     home: data.data,
@@ -54,6 +59,20 @@ export const action: ActionFunction = async ({ request }) => {
     return json({ error: 'Email already subscribed.' }, { status: 200 })
   }
 
+  const newsLetterBody: NewsLetterParams = {
+    data: {
+      email: email,
+      active: true,
+    },
+  }
+
+  const response = await axiosInstance.post('/newsletters', newsLetterBody)
+  if (!response) {
+    return {
+      error: 'Something went wrong. Try again.',
+    }
+  }
+
   return json({ success: true, message: 'Subscription successful!' })
 }
 
@@ -64,37 +83,37 @@ export default function Home() {
 
   return (
     <>
-      <ScrollspyProvider navItems={home.menu}>
-        <NavHeader menus={home.menu} />
+      <ScrollspyProvider navItems={home?.menu}>
+        <NavHeader menus={home?.menu} />
         <div id="home">
           <BannerSection
-            title={home.bannerTitle}
-            description={home.bannerDescription}
-            actionText={home.bannerActionText}
+            title={home?.bannerTitle}
+            description={home?.bannerDescription}
+            actionText={home?.bannerActionText}
           />
         </div>
         <div id="products">
-          <ProductSection data={home.products} />
+          <ProductSection data={home?.products} />
         </div>
         <div id="company-directories">
           <CompanyDirectorySection
-            title={home.companySectionTitle}
-            description={home.companySectionDescription}
-            buttonText={home.companyButtonText}
-            buttonUrl={home.companyButtonUrl}
+            title={home?.companySectionTitle}
+            description={home?.companySectionDescription}
+            buttonText={home?.companyButtonText}
+            buttonUrl={home?.companyButtonUrl}
           />
         </div>
         <div id="about">
           <AboutUsSection
-            images={home.companyBackgroundImages}
-            description={home.aboutUsDescription}
-            description1={home.aboutUsDescription1}
-            description2={home.aboutUsDescription2}
-            title={home.aboutUsSectionTitle}
+            images={home?.companyBackgroundImages}
+            description={home?.aboutUsDescription}
+            description1={home?.aboutUsDescription1}
+            description2={home?.aboutUsDescription2}
+            title={home?.aboutUsSectionTitle}
           />
         </div>
       </ScrollspyProvider>
-      <Footer data={home.Footer} actionData={actionData} formAction="/home" />
+      <Footer data={home?.Footer} actionData={actionData} formAction="/home" />
     </>
   )
 }

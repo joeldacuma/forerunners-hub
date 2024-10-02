@@ -8,7 +8,6 @@ import {
 } from 'lucide-react'
 import { FooterProps } from 'app/common/models'
 import { Form, useActionData } from '@remix-run/react'
-import {} from '@remix-run/node'
 
 interface ExtendedFooterProps extends FooterProps {
   actionData?: {
@@ -16,7 +15,7 @@ interface ExtendedFooterProps extends FooterProps {
     success?: boolean
     message?: string
   }
-  formAction: string
+  formAction?: string
 }
 
 export const Footer: React.FC<ExtendedFooterProps> = ({
@@ -44,8 +43,6 @@ export const Footer: React.FC<ExtendedFooterProps> = ({
               ))}
             </ul>
           </div>
-
-          {/* Products */}
           <div className="mb-8 sm:mb-0">
             <h2 className="text-lg font-semibold mb-4 text-gray-800">
               Products
@@ -74,34 +71,36 @@ export const Footer: React.FC<ExtendedFooterProps> = ({
               ))}
             </ul>
           </div>
-          <div className="mb-8 sm:mb-0">
-            <h2 className="text-lg font-semibold mb-4 text-gray-800">
-              {data.subscribeTitle}
-            </h2>
-            <p className="mb-4">{data.subscribeDescription}</p>
-            <Form method="post" action={formAction} className="space-y-2">
-              <Input
-                type="email"
-                name="email"
-                variant="bordered"
-                placeholder="Enter your email..."
-                aria-label="Email for newsletter"
-                className="w-full sm:w-auto"
-              />
-              {formActionData?.error && (
-                <em className="text-red-500">{formActionData.error}</em>
-              )}
-              {formActionData?.success && (
-                <em className="text-green-500">{formActionData.message}</em>
-              )}
-              <Button
-                type="submit"
-                className="bg-light-violet text-white w-full"
-              >
-                {data.subscribeButtonText}
-              </Button>
-            </Form>
-          </div>
+          {formAction && (
+            <div className="mb-8 sm:mb-0">
+              <h2 className="text-lg font-semibold mb-4 text-gray-800">
+                {data.subscribeTitle}
+              </h2>
+              <p className="mb-4">{data.subscribeDescription}</p>
+              <Form method="post" action={formAction} className="space-y-2">
+                <Input
+                  type="email"
+                  name="email"
+                  variant="bordered"
+                  placeholder="Enter your email..."
+                  aria-label="Email for newsletter"
+                  className="w-full sm:w-auto"
+                />
+                {formActionData?.error && (
+                  <em className="text-red-500">{formActionData.error}</em>
+                )}
+                {formActionData?.success && (
+                  <em className="text-green-500">{formActionData.message}</em>
+                )}
+                <Button
+                  type="submit"
+                  className="bg-light-violet text-white w-full"
+                >
+                  {data.subscribeButtonText}
+                </Button>
+              </Form>
+            </div>
+          )}
         </div>
         <div className="mt-8 pt-8 border-t border-gray-200">
           <div className="flex flex-col sm:flex-row justify-between items-center">

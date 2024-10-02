@@ -8,31 +8,22 @@ export default {
     './node_modules/@nextui-org/theme/dist/**/*.{js,ts,jsx,tsx}'
   ],
   theme: {
-    screens: {
-      'xs': '640px',
-      ...defaultTheme.screens,
-    },
-    extend: {
-      colors: {
-        'light-blue': '#38b6ff',
-        'light-violet': '#b55ef1',
-      },
-      fontFamily: {
-        montserrat: ['Montserrat', 'sans-serif'],
-        sans: [
-          '"Inter"',
-          'ui-sans-serif',
-          'system-ui',
-          'sans-serif',
-          '"Apple Color Emoji"',
-          '"Segoe UI Emoji"',
-          '"Segoe UI Symbol"',
-          '"Noto Color Emoji"',
-        ],
-      },
-    },
+  	extend: {
+  		colors: {
+  			'light-blue': '#38b6ff',
+  			'light-violet': '#b55ef1'
+  		},
+  		fontFamily: {
+  			montserrat: ['Montserrat', 'sans-serif'],
+  		},
+  		borderRadius: {
+  			lg: 'var(--radius)',
+  			md: 'calc(var(--radius) - 2px)',
+  			sm: 'calc(var(--radius) - 4px)'
+  		}
+  	}
   },
-  darkMode: 'class',
+  darkMode: ['class', 'class'],
   plugins: [nextui({
     defaultTheme: 'light',
     themes: {
@@ -42,5 +33,7 @@ export default {
         }  
       }
     },
-  })],
+  }),
+      require("tailwindcss-animate")
+],
 } satisfies Config

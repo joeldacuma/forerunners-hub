@@ -7,13 +7,7 @@ import {
   CardHeader,
   Button,
 } from '@nextui-org/react'
-
-interface ProductProps {
-  Title: string
-  Description: string
-  ActionButtonText: string
-  ActionButtonUrl: string
-}
+import { ProductProps } from 'app/common/models'
 
 interface ProductSectionProps {
   data: ProductProps[]
