@@ -4,7 +4,8 @@
   "info": {
     "singularName": "company-directory",
     "pluralName": "company-directories",
-    "displayName": "Company Directory"
+    "displayName": "Company Directory",
+    "description": ""
   },
   "options": {
     "draftAndPublish": true
@@ -15,6 +16,15 @@
       "type": "component",
       "repeatable": true,
       "component": "navigation.menu"
+    },
+    "companyDIrectoryMainTitle": {
+      "type": "string"
+    },
+    "companyDirectoryMainDescription": {
+      "type": "text"
+    },
+    "companyDIrectoryListAriaLabel": {
+      "type": "string"
     }
   }
 }

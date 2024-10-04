@@ -38,7 +38,10 @@ export const CompanyDirectorySection: React.FC<CompanyDirectoryProps> = ({
           <Link href={`${buttonUrl}`}>
             <Button
               isLoading={loading}
-              onClick={() => setLoading(true)}
+              onClick={(event) => {
+                event.stopPropagation()
+                setLoading(true)
+              }}
               size="lg"
               className="text-base font-bold text-sky-700 sm:text-lg px-6 sm:px-8 py-2 sm:py-3"
             >

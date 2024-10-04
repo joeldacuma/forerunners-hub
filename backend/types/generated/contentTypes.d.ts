@@ -485,6 +485,40 @@ export interface PluginUsersPermissionsUser
   };
 }
 
+export interface ApiCompanyCompany extends Struct.CollectionTypeSchema {
+  collectionName: 'companies';
+  info: {
+    singularName: 'company';
+    pluralName: 'companies';
+    displayName: 'Companies';
+    description: '';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    name: Schema.Attribute.String;
+    logo: Schema.Attribute.Media<'images', true>;
+    overview: Schema.Attribute.Text;
+    contactHR: Schema.Attribute.Email;
+    valuePropositiion: Schema.Attribute.Text;
+    website: Schema.Attribute.String;
+    active: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
+    createdAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    publishedAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::company.company'
+    >;
+  };
+}
+
 export interface ApiCompanyDirectoryCompanyDirectory
   extends Struct.SingleTypeSchema {
   collectionName: 'company_directories';
@@ -492,12 +526,16 @@ export interface ApiCompanyDirectoryCompanyDirectory
     singularName: 'company-directory';
     pluralName: 'company-directories';
     displayName: 'Company Directory';
+    description: '';
   };
   options: {
     draftAndPublish: true;
   };
   attributes: {
     menu: Schema.Attribute.Component<'navigation.menu', true>;
+    companyDIrectoryMainTitle: Schema.Attribute.String;
+    companyDirectoryMainDescription: Schema.Attribute.Text;
+    companyDIrectoryListAriaLabel: Schema.Attribute.String;
     createdAt: Schema.Attribute.DateTime;
     updatedAt: Schema.Attribute.DateTime;
     publishedAt: Schema.Attribute.DateTime;
@@ -960,6 +998,7 @@ declare module '@strapi/strapi' {
       'plugin::users-permissions.permission': PluginUsersPermissionsPermission;
       'plugin::users-permissions.role': PluginUsersPermissionsRole;
       'plugin::users-permissions.user': PluginUsersPermissionsUser;
+      'api::company.company': ApiCompanyCompany;
       'api::company-directory.company-directory': ApiCompanyDirectoryCompanyDirectory;
       'api::home.home': ApiHomeHome;
       'api::newsletter.newsletter': ApiNewsletterNewsletter;

@@ -10,7 +10,7 @@ import {
   Link as MenuLink,
   Button,
 } from '@nextui-org/react'
-import { MenuProps, HomeAPIResponse } from 'app/common/models'
+import { MenuProps } from 'app/common/models'
 import { useScrollSpy } from 'app/common/providers'
 
 interface NavHeaderProps {
@@ -69,7 +69,7 @@ export const NavHeader: React.FC<NavHeaderProps> = ({ menus }) => {
             className="bg-light-violet text-white font-bold"
             variant="flat"
           >
-            Request Demo
+            Early Access
           </Button>
         </NavbarItem>
       </NavbarContent>
