@@ -29,6 +29,7 @@ import {
 } from 'app/utils/api'
 import { useEffect, useState } from 'react'
 import { Company } from 'app/common/models'
+import { useHomeData } from 'app/common/app-store'
 
 export const meta: MetaFunction = () => {
   return [
@@ -79,13 +80,20 @@ export default function CompanyDirectories() {
   const companyResponse = actionAPI?.companies || loaderAPI.companies
   const [page, setPage] = useState(loaderAPI.page || 1)
   const { data: companies, meta: companyPagination } = companyResponse
+  const homeData = useHomeData()
 
   useEffect(() => {
+    if (!homeData) {
+
+    }
+
+    console.log(homeData)
+
     const form = new FormData()
     form.append('page', page.toString())
     form.append('pageSize', '10')
     submit(form, { method: 'get' })
-  }, [page, submit])
+  }, [homeData, page, submit])
 
   return (
     <>
