@@ -9,7 +9,8 @@ import {
 import { FooterProps } from 'app/common/models'
 import { Form, useActionData } from '@remix-run/react'
 
-interface ExtendedFooterProps extends FooterProps {
+interface ExtendedFooterProps {
+  data: FooterProps
   actionData?: {
     error?: string
     success?: boolean

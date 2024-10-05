@@ -1,4 +1,5 @@
 import { axiosInstance } from 'app/utils'
+import { HomeAPIResponse } from 'app/common/models'
 
 // Fetch companies with pagination
 export const fetchCompanies = async (page = 1, pageSize = 10) => {
@@ -14,8 +15,7 @@ export const fetchCompanies = async (page = 1, pageSize = 10) => {
     return response.data
   }
   
-  // Fetch home details
   export const fetchHomeData = async () => {
-    const response = await axiosInstance.get('/home?pLevel')
+    const response = await axiosInstance.get<HomeAPIResponse>('/home?pLevel')
     return response.data
   }

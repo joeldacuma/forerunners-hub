@@ -5,6 +5,7 @@ import {
   MetaFunction,
   useActionData,
   useLoaderData,
+  useNavigation,
   useSubmit,
 } from '@remix-run/react'
 import { LoaderFunction, ActionFunction } from '@remix-run/node'
@@ -17,6 +18,9 @@ import {
   TableCell,
   TableColumn,
   Button,
+  Image,
+  Pagination,
+  Spinner,
 } from '@nextui-org/react'
 import {
   fetchCompanies,
@@ -24,7 +28,7 @@ import {
   fetchHomeData,
 } from 'app/utils/api'
 import { useEffect, useState } from 'react'
-import { CompaniesAPIResponse, Company } from 'app/common/models'
+import { Company } from 'app/common/models'
 
 export const meta: MetaFunction = () => {
   return [
@@ -66,21 +70,20 @@ export const action: ActionFunction = async ({ request }) => {
 export default function CompanyDirectories() {
   const loaderAPI = useLoaderData<typeof loader>()
   const actionAPI = useActionData<typeof action>()
+  const navigation = useNavigation()
   const submit = useSubmit()
 
-  const { companyDirectories, home, } = loaderAPI
+  const isLoading = navigation.state === 'submitting'
+
+  const { companyDirectories, home } = loaderAPI
   const companyResponse = actionAPI?.companies || loaderAPI.companies
   const [page, setPage] = useState(loaderAPI.page || 1)
   const { data: companies, meta: companyPagination } = companyResponse
 
-  const onPaginationChange = (nextPage: number) => {
-    setPage(nextPage)
-  }
-
   useEffect(() => {
     const form = new FormData()
     form.append('page', page.toString())
-    form.append('pageSize', '10') // Default pageSize
+    form.append('pageSize', '10')
     submit(form, { method: 'get' })
   }, [page, submit])
 
@@ -108,7 +111,7 @@ export default function CompanyDirectories() {
                   removeWrapper
                   aria-label={companyDirectories.companyDIrectoryListAriaLabel}
                 >
-                  <TableHeader className="bg-gray-50">
+                  <TableHeader className="bg-gray -50">
                     <TableColumn
                       key="logo"
                       className="w-40 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
@@ -122,34 +125,72 @@ export default function CompanyDirectories() {
                       NAME
                     </TableColumn>
                   </TableHeader>
-                  <TableBody>
+                  {isLoading ? (
+                    <Spinner />
+                  ) : (
+                    <TableBody>
                       {companies?.map((company: Company) => (
-                        <TableRow key={company.id}>
-                          <TableCell>
-                          {company?.logo ? (
-                            <img
-                              src={company?.logo[0].url}
-                              alt={`${company.name} Logo`}
-                              className="w-20 h-20 object-contain"
-                            />
-                          ) : (
-                            <span>No logo available</span>
-                          )}
+                        <TableRow
+                          className="p-10 border-b border-gray-300"
+                          key={company.id}
+                        >
+                          <TableCell className="py-6 flex justify-center text-center">
+                            {company?.logo ? (
+                              <Image
+                                className="w-60 h-20 object-contain"
+                                src={company?.logo[0].url}
+                                alt={`${company.name} Logo`}
+                              />
+                            ) : (
+                              <Image
+                                className="w-60 h-20 object-contain"
+                                src="/no-image.png"
+                                alt="No Logo"
+                              />
+                            )}
                           </TableCell>
-                          <TableCell>{company.name}</TableCell>
+                          <TableCell className="py-6">{company.name}</TableCell>
                         </TableRow>
                       ))}
-                  </TableBody>
+                    </TableBody>
+                  )}
                 </Table>
               </div>
-              <Button
-                onClick={() =>
-                  onPaginationChange(companyPagination?.pagination.page + 1)
-                }
-                type="submit"
-              >
-                Next
-              </Button>
+              <div className="w-full flex justify-end gap-2">
+                <Button
+                  size="sm"
+                  onClick={() =>
+                    setPage((prev: number) => (prev > 1 ? prev - 1 : prev))
+                  }
+                  isDisabled={page <= 1 || isLoading}
+                  type="submit"
+                >
+                  Previous
+                </Button>
+                <Pagination
+                  showShadow
+                  color="primary"
+                  onChange={setPage}
+                  page={page}
+                  total={companyPagination?.pagination.pageCount}
+                />
+                <Button
+                  size="sm"
+                  isDisabled={
+                    page >= companyPagination?.pagination.pageCount || isLoading
+                  }
+                  onClick={() =>
+                    setPage((prev: number) =>
+                      prev < companyPagination?.pagination.pageCount
+                        ? prev + 1
+                        : prev
+                    )
+                  }
+                  type="submit"
+                >
+                  Next
+                </Button>
+              </div>
             </div>
             <div className="w-full p-4"></div>
           </div>

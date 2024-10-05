@@ -1,6 +1,5 @@
 import {
   type MetaFunction,
-  type LoaderFunction,
   json,
   type ActionFunction,
 } from '@remix-run/node'
@@ -15,10 +14,8 @@ import {
 import { Footer, NavHeader } from 'app/common'
 import { ScrollspyProvider } from '~/common/providers'
 import { NewsLetterParams, HomeAPIResponse } from '~/common/models'
-
-interface HomeData {
-  data?: HomeAPIResponse
-}
+import { useHomeData, useFetchHomeData } from 'app/common/app-store'
+import { useEffect } from 'react'
 
 export const meta: MetaFunction = () => {
   return [
@@ -26,14 +23,6 @@ export const meta: MetaFunction = () => {
     { name: 'description', content: 'Welcome to Forerunners HUB!' },
     { name: 'keywords', content: 'HR,Human Resources,AI' },
   ]
-}
-
-export const loader: LoaderFunction = async () => {
-  const homeResponse = await axiosInstance.get<HomeData>('/home?pLevel')
-  const { data } = homeResponse
-  return json({
-    home: data.data,
-  })
 }
 
 export const action: ActionFunction = async ({ request }) => {
@@ -77,43 +66,59 @@ export const action: ActionFunction = async ({ request }) => {
 }
 
 export default function Home() {
-  const homeAPI = useLoaderData<typeof loader>()
-  const { home } = homeAPI
   const actionData = useActionData<typeof action>()
+  const homeData = useHomeData()
+  const fetchHomeData = useFetchHomeData()
+
+  useEffect(() => {
+    if (!homeData) {
+      fetchHomeData()
+    }
+  }, [homeData, fetchHomeData])
 
   return (
     <>
-      <ScrollspyProvider navItems={home?.menu}>
-        <NavHeader menus={home?.menu} />
-        <div id="home">
-          <BannerSection
-            title={home?.bannerTitle}
-            description={home?.bannerDescription}
-            actionText={home?.bannerActionText}
+      {homeData?.data ? (
+        <div>
+          <ScrollspyProvider navItems={homeData.data?.menu}>
+            <NavHeader menus={homeData.data?.menu} />
+            <div id="home">
+              <BannerSection
+                title={homeData.data.bannerTitle}
+                description={homeData.data?.bannerDescription}
+                actionText={homeData.data?.bannerActionText}
+              />
+            </div>
+            <div id="products">
+              <ProductSection data={homeData.data?.products} />
+            </div>
+            <div id="company-directories">
+              <CompanyDirectorySection
+                title={homeData.data?.companySectionTitle}
+                description={homeData.data?.companySectionDescription}
+                buttonText={homeData.data?.companyButtonText}
+                buttonUrl={homeData.data?.companyButtonUrl}
+              />
+            </div>
+            <div id="about">
+              <AboutUsSection
+                images={homeData.data?.companyBackgroundImages}
+                description={homeData.data?.aboutUsDescription}
+                description1={homeData.data.aboutUsDescription2}
+                description2={homeData.data?.aboutUsDescription3}
+                title={homeData.data?.aboutUsSectionTitle}
+              />
+            </div>
+          </ScrollspyProvider>
+          <Footer
+            data={homeData.data?.Footer}
+            actionData={actionData}
+            formAction="/home"
           />
         </div>
-        <div id="products">
-          <ProductSection data={home?.products} />
-        </div>
-        <div id="company-directories">
-          <CompanyDirectorySection
-            title={home?.companySectionTitle}
-            description={home?.companySectionDescription}
-            buttonText={home?.companyButtonText}
-            buttonUrl={home?.companyButtonUrl}
-          />
-        </div>
-        <div id="about">
-          <AboutUsSection
-            images={home?.companyBackgroundImages}
-            description={home?.aboutUsDescription}
-            description1={home?.aboutUsDescription1}
-            description2={home?.aboutUsDescription2}
-            title={home?.aboutUsSectionTitle}
-          />
-        </div>
-      </ScrollspyProvider>
-      <Footer data={home?.Footer} actionData={actionData} formAction="/home" />
+      ) : (
+        <p>Loading...</p>
+      )}
     </>
   )
 }

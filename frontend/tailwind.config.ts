@@ -1,5 +1,4 @@
 import type { Config } from 'tailwindcss'
-import defaultTheme from 'tailwindcss/defaultTheme'
 import { nextui } from '@nextui-org/react'
 
 export default {
@@ -10,6 +9,7 @@ export default {
   theme: {
   	extend: {
   		colors: {
+        'primary': '#0369a1',
   			'light-blue': '#38b6ff',
   			'light-violet': '#b55ef1'
   		},

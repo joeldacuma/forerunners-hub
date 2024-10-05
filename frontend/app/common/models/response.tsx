@@ -1,8 +1,8 @@
 import { MenuProps, ProductProps, ImageProps, Image, FooterProps } from './util'
 
-export interface HomeAPIResponse {
+export interface Home {
   menu: MenuProps[]
-  bannertitle: string
+  bannerTitle: string
   bannerActionText: string
   bannerDescription: string
   products: ProductProps[]
@@ -37,7 +37,19 @@ export interface Company {
 export interface CompaniesAPIResponse {
   data: Company[] | []
   meta: {
-    pagination: {
+    pagination?: {
+      page: number
+      pageSize: number
+      pageCount: number
+      total: number
+    } 
+  }
+}
+
+export interface HomeAPIResponse {
+  data: Home
+  meta: {
+    pagination?: {
       page: number
       pageSize: number
       pageCount: number

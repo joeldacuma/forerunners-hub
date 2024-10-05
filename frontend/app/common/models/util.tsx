@@ -89,7 +89,6 @@ export interface MenuProps {
 }
 
 export interface FooterProps {
-  data: {
     copyrightText: string
     Company: {
       title: string
@@ -110,7 +109,6 @@ export interface FooterProps {
     twitterUrl: string | undefined
     instagramUrl: string | undefined
     linkedinUrl: string | undefined
-  }
 }
 
 export interface NewsLetterParams {

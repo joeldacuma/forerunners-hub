@@ -1,11 +1,17 @@
 import {
+  json,
   Links,
   Meta,
   Outlet,
   Scripts,
   ScrollRestoration,
+  useLoaderData,
 } from '@remix-run/react'
-import type { LinksFunction } from '@remix-run/node'
+import type {
+  LinksFunction,
+  LoaderFunction,
+  LoaderFunctionArgs,
+} from '@remix-run/node'
 import { NextUIProvider } from '@nextui-org/react'
 
 import './index.css'
@@ -23,7 +29,19 @@ export const links: LinksFunction = () => [
   },
 ]
 
+export const loader: LoaderFunction = async ({
+  request,
+}: LoaderFunctionArgs) => {
+  return json({
+    ENV: {
+      API_URL: process.env.STRAPI_API_URL,
+    },
+  })
+}
+
 export function Layout({ children }: { children: React.ReactNode }) {
+  const data = useLoaderData<typeof loader>()
+
   return (
     <html lang="en">
       <head>
@@ -37,6 +55,11 @@ export function Layout({ children }: { children: React.ReactNode }) {
           <main>{children}</main>
           <ScrollRestoration />
           <Scripts />
+          <script
+            dangerouslySetInnerHTML={{
+              __html: `window.ENV = ${JSON.stringify(data.ENV)}`,
+            }}
+          />
         </NextUIProvider>
       </body>
     </html>
