@@ -1,20 +1,22 @@
-import {
-  type MetaFunction,
-  json,
-  type ActionFunction,
-} from '@remix-run/node'
-import { useActionData, useLoaderData } from '@remix-run/react'
+import { type MetaFunction, json, type ActionFunction } from '@remix-run/node'
+import { useActionData } from '@remix-run/react'
 import { axiosInstance } from 'app/utils'
 import {
   BannerSection,
   ProductSection,
   CompanyDirectorySection,
   AboutUsSection,
-} from 'app/components/home'
+  LoadingSpinner,
+} from 'app/components'
 import { Footer, NavHeader } from 'app/common'
 import { ScrollspyProvider } from '~/common/providers'
-import { NewsLetterParams, HomeAPIResponse } from '~/common/models'
-import { useHomeData, useFetchHomeData } from 'app/common/app-store'
+import { NewsLetterParams } from '~/common/models'
+import {
+  useHomeData,
+  useFetchHomeData,
+  useFetchCompaniesDirectoryData,
+  useFetchCompaniesData,
+} from 'app/common/app-store'
 import { useEffect } from 'react'
 
 export const meta: MetaFunction = () => {
@@ -69,12 +71,16 @@ export default function Home() {
   const actionData = useActionData<typeof action>()
   const homeData = useHomeData()
   const fetchHomeData = useFetchHomeData()
+  const fetchCompaniesDirectoryData = useFetchCompaniesDirectoryData()
+  const fetchCompaniesData = useFetchCompaniesData()
 
   useEffect(() => {
     if (!homeData) {
       fetchHomeData()
+      fetchCompaniesDirectoryData()
+      fetchCompaniesData()
     }
-  }, [homeData, fetchHomeData])
+  }, [homeData])
 
   return (
     <>
@@ -117,7 +123,7 @@ export default function Home() {
           />
         </div>
       ) : (
-        <p>Loading...</p>
+        <LoadingSpinner />
       )}
     </>
   )

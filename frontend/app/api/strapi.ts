@@ -1,21 +1,28 @@
 import { axiosInstance } from 'app/utils'
-import { HomeAPIResponse } from 'app/common/models'
+import {
+  HomeAPIResponse,
+  CompanyDirectoriesResponse,
+  CompaniesAPIResponse,
+} from 'app/common/models'
 
 // Fetch companies with pagination
 export const fetchCompanies = async (page = 1, pageSize = 10) => {
-    const response = await axiosInstance.get(
+    const response = await axiosInstance.get<CompaniesAPIResponse>(
       `/companies?pagination[page]=${page}&pagination[pageSize]=${pageSize}&pLevel`
     )
+
     return response.data
-  }
-  
-  // Fetch company directory details
-  export const fetchCompanyDirectory = async () => {
-    const response = await axiosInstance.get('/company-directory?pLevel')
+}
+
+export const fetchCompanyDirectory = async () => {
+    const response = await axiosInstance.get<CompanyDirectoriesResponse>(
+      '/company-directory?pLevel')
+
     return response.data
-  }
-  
-  export const fetchHomeData = async () => {
+}
+
+export const fetchHome = async () => {
     const response = await axiosInstance.get<HomeAPIResponse>('/home?pLevel')
     return response.data
-  }
+
+}

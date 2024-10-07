@@ -14,7 +14,7 @@ import { MenuProps } from 'app/common/models'
 import { useScrollSpy } from 'app/common/providers'
 
 interface NavHeaderProps {
-  menus: MenuProps[]
+  menus?: MenuProps[]
 }
 
 export const NavHeader: React.FC<NavHeaderProps> = ({ menus }) => {

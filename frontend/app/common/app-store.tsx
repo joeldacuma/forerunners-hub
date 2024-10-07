@@ -5,11 +5,15 @@ export type ApplicationStore = ReturnType<typeof createPageDataSlice> // Build a
 
 export const useApplicationStore = createImmerStore<ApplicationStore>(
   [createPageDataSlice],
-  'applicationStore'
+  'forerunnersAppDataStore'
 )
 
 // // Each hook is exported individually to ensure the rule of hooks is applied
 export const {
+  useHomeData,
+  useCompanyDirectoriesData,
+  useCompaniesData,
   useFetchHomeData,
-  useHomeData,  
+  useFetchCompaniesDirectoryData,
+  useFetchCompaniesData,  
 } = createStoreHooks(useApplicationStore)

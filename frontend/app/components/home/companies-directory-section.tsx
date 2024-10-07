@@ -1,6 +1,7 @@
-import { Button, Link } from '@nextui-org/react'
+import { Button } from '@nextui-org/react'
+import { Link } from '@remix-run/react'
 import { ChevronRight } from 'lucide-react'
-import React, { useState } from 'react'
+import React from 'react'
 
 interface CompanyDirectoryProps {
   title: string
@@ -15,7 +16,6 @@ export const CompanyDirectorySection: React.FC<CompanyDirectoryProps> = ({
   buttonText,
   buttonUrl,
 }) => {
-  const [loading, setLoading] = useState(false)
 
   return (
     <div className="relative min-h-screen flex items-center justify-center overflow-hidden">
@@ -35,13 +35,8 @@ export const CompanyDirectorySection: React.FC<CompanyDirectoryProps> = ({
           {description}
         </p>
         <div>
-          <Link href={`${buttonUrl}`}>
+          <Link to={`${buttonUrl}`}>
             <Button
-              isLoading={loading}
-              onClick={(event) => {
-                event.stopPropagation()
-                setLoading(true)
-              }}
               size="lg"
               className="text-base font-bold text-sky-700 sm:text-lg px-6 sm:px-8 py-2 sm:py-3"
             >

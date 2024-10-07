@@ -1,4 +1,4 @@
-import { MenuProps, ProductProps, ImageProps, Image, FooterProps } from './util'
+import { MenuProps, ProductProps, ImageProps, Image, FooterProps, } from './util'
 
 export interface Home {
   menu: MenuProps[]
@@ -34,8 +34,34 @@ export interface Company {
   localizations?: string
 }
 
+export interface CompanyDirectory {
+  id: number
+  documentId: string
+  createdAt: string
+  updatedAt: string
+  publishedAt: string
+  locale: string | null
+  companyDirectoryMainTitle: string
+  companyDirectoryMainDescription: string
+  companyDirectoryListAriaLabel: string
+  menu: MenuProps[]
+  localizations: string[]
+}
+
 export interface CompaniesAPIResponse {
-  data: Company[] | []
+  data?: Company[]
+  meta?: {
+    pagination?: {
+      page: number
+      pageSize: number
+      pageCount: number
+      total: number
+    }
+  }
+}
+
+export interface HomeAPIResponse {
+  data: Home
   meta: {
     pagination?: {
       page: number
@@ -46,8 +72,8 @@ export interface CompaniesAPIResponse {
   }
 }
 
-export interface HomeAPIResponse {
-  data: Home
+export interface CompanyDirectoriesResponse {
+  data: CompanyDirectory
   meta: {
     pagination?: {
       page: number

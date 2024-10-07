@@ -1,17 +1,15 @@
 import { redirect, LoaderFunction } from '@remix-run/node'
-import { Spinner } from '@nextui-org/react'
-import { useFetchHomeData } from 'app/common/app-store'
+import { LoadingSpinner } from 'app/components'
 
 export const loader: LoaderFunction = async () => {
   return redirect('/home')
 }
 
 export default function Index() {
+
   return (
     <>
-      <div>
-        <Spinner />
-      </div>
+      <LoadingSpinner />
     </>
   )
 }
