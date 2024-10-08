@@ -32,7 +32,13 @@ export default [
     config: {
       enabled: true,
       header: "*",
-      origin: ["http://localhost:1337","http://localhost:5173","https://forerunners-frontend-production.up.railway.app","https://forerunners-backend-production.up.railway.app"],
+      origin: [
+        "http://localhost:1337",
+        "http://localhost:5173",
+        "https://forerunnershub.io",
+        "http://forerunnershub.io",
+        "https://forerunners-backend-production.up.railway.app",
+      ],
     },
   },
   "strapi::poweredBy",
