@@ -5,11 +5,6 @@ const isServer = typeof window === 'undefined';
 export const axiosInstance = axios.create({
   baseURL: isServer ? process.env.STRAPI_API_URL : window.ENV.API_URL,
   timeout: 10000,
-  headers: { 
-    "X-Custom-Header": "Forerunners HUB",
-    "Access-Control-Allow-Origin": "*",
-    "Content-Type" : "application/json"
-  },
 });
 
 // Request interceptor
