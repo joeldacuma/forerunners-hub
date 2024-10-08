@@ -32,6 +32,7 @@ export const loader: LoaderFunction = async () => {
   return json({
     ENV: {
       API_URL: process.env.STRAPI_API_URL,
+      ORIGIN: process.env.WHITELIST_ORIGIN,
     },
   })
 }
