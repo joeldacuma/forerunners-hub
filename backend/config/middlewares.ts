@@ -31,15 +31,8 @@ export default [
     name: "strapi::cors",
     config: {
       enabled: true,
-      header: [
-        "accept-language",
-        "Content-Type",
-        "Authorization",
-        "Accept",
-        "X-Timezone",
-        "X-Timezone-Name",
-      ],
-      origin: "*"
+      header: "*",
+      origin: ["http://localhost:1337","http://localhost:5173","https://forerunners-frontend-production.up.railway.app","https://forerunners-backend-production.up.railway.app"],
     },
   },
   "strapi::poweredBy",
