@@ -21,4 +21,10 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./app/"),
     },
   },
+  server: {
+    cors: {
+      origin: process.env.WHITELIST_ORIGIN,
+      credentials: true,
+    },
+  },
 });

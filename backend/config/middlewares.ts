@@ -27,7 +27,21 @@ export default [
       },
     },
   },
-  "strapi::cors",
+  {
+    name: "strapi::cors",
+    config: {
+      enabled: true,
+      header: [
+        "accept-language",
+        "Content-Type",
+        "Authorization",
+        "Accept",
+        "X-Timezone",
+        "X-Timezone-Name",
+      ],
+      origin: process.env.WHITELIST_ORIGIN,
+    },
+  },
   "strapi::poweredBy",
   "strapi::query",
   "strapi::body",
