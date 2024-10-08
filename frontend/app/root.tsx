@@ -10,7 +10,6 @@ import {
 import type {
   LinksFunction,
   LoaderFunction,
-  LoaderFunctionArgs,
 } from '@remix-run/node'
 import { NextUIProvider } from '@nextui-org/react'
 
@@ -29,9 +28,7 @@ export const links: LinksFunction = () => [
   },
 ]
 
-export const loader: LoaderFunction = async ({
-  request,
-}: LoaderFunctionArgs) => {
+export const loader: LoaderFunction = async () => {
   return json({
     ENV: {
       API_URL: process.env.STRAPI_API_URL,

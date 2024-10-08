@@ -34,7 +34,7 @@ export const NavHeader: React.FC<NavHeaderProps> = ({ menus }) => {
   )
 
   return (
-    <Navbar shouldHideOnScroll onMenuOpenChange={setIsOpen} className="py-4">
+    <Navbar shouldHideOnScroll isMenuOpen={isOpen} onMenuOpenChange={setIsOpen} className="py-4">
       <NavbarBrand>
         <MenuLink href="/">
           <img src="/logo.png" alt="Forerunners" className="h-5 md:h-8" />
@@ -76,11 +76,12 @@ export const NavHeader: React.FC<NavHeaderProps> = ({ menus }) => {
       <NavbarContent className="sm:hidden" justify="end">
         <NavbarMenuToggle aria-label={isOpen ? 'Close menu' : 'Open menu'} />
       </NavbarContent>
-      <NavbarMenu className="flex md:hidden gap-y-5">
+      <NavbarMenu className="flex md:hidden gap-y-5 pt-10">
         {menus?.map((menu) => (
           <NavbarMenuItem key={menu.title}>
             <MenuLink
               href={menu.url}
+              onClick={() => setIsOpen(false)}
               className={`text-sky-700 text-sm font-bold p-2 after:bg-light-blue after:absolute after:h-1 after:w-0 after:bottom-0 
                 after:left-0 hover:after:w-full after:transition-all after:duration-300 cursor-pointer`}
             >

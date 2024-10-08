@@ -37,7 +37,7 @@ export const createPageDataSlice: StateCreator<Props> = (set) => ({
       set({ error: 'Failed to fetch company directories data', isLoading: false })
     }
   },
-  fetchCompaniesData: async (page = 1, pageSize = 10) => {
+  fetchCompaniesData: async (page = 1, pageSize = 5) => {
     set({ isLoading: true })
     try {
       const response = await fetchCompanies(page, pageSize)

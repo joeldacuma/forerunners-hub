@@ -7,8 +7,12 @@ const assignWith = _.assignWith
 const set = _.set
 const upperFirst = _.upperFirst
 
+type StateCreatorArray<S> =
+  | StateCreator<S, [['zustand/immer', never], ['zustand/persist', unknown]]>
+  | Array<StateCreator<S>>
+
 export function createImmerStore<S>(
-  slices: StateCreator<S> | Array<StateCreator<any>>,
+  slices: StateCreatorArray<S>,
   storeKey: string
 ) {
   const slicesArray = Array.isArray(slices) ? slices : [slices]
@@ -16,17 +20,22 @@ export function createImmerStore<S>(
   // Create a store with persistence
   return create<S>()(
     persist(
-      immer((...init) =>
+      immer((set, get, api) =>
         assignWith(
           {},
           ...slicesArray.map((slice) =>
-            (slice as unknown as StateCreator<unknown>)(...init)
+            (slice as StateCreator<S, [['zustand/immer', never]]>)(
+              set,
+              get,
+              api
+            )
           )
         )
       ),
       {
         name: storeKey, // Unique key for the store in localStorage
-        partialize: (state: any) => _.omit(state, ['isLoading', 'error']), // Optionally exclude some parts of the state from persisting
+        partialize: (state: Partial<S>) =>
+          _.omit(state, ['isLoading', 'error']), // Optionally exclude some parts of the state from persisting
       }
     )
   )
@@ -39,7 +48,7 @@ export type StoreHooks<S> = {
 /**
  * Create React hooks for accessing the store's properties.
  */
-export function createStoreHooks<S extends {}>(
+export function createStoreHooks<S extends object>(
   _store: ReturnType<typeof createImmerStore<S>>
 ) {
   const hooks = {} as StoreHooks<S>
@@ -55,8 +64,8 @@ export function createStoreHooks<S extends {}>(
 /**
  * Create a Zustand store with Immer, persistence, and React hooks.
  */
-export function createStoreWithHooks<S extends {}>(
-  slices: Parameters<typeof createImmerStore>[0],
+export function createStoreWithHooks<S extends object>(
+  slices: StateCreatorArray<S>,
   storeKey: string // Key for localStorage or sessionStorage
 ): [
   ReturnType<typeof createImmerStore<S>>,
@@ -65,7 +74,10 @@ export function createStoreWithHooks<S extends {}>(
   const slicesArray = Array.isArray(slices) ? slices : [slices]
 
   // Create the store with persistence
-  const store = createImmerStore<S>(slicesArray, storeKey)
+  const store = createImmerStore<S>(
+    slicesArray as StateCreatorArray<S>,
+    storeKey
+  )
   const hooks = createStoreHooks<S>(store)
 
   return [store, hooks]

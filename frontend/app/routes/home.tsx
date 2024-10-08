@@ -80,7 +80,7 @@ export default function Home() {
       fetchCompaniesDirectoryData()
       fetchCompaniesData(1, 5)
     }
-  }, [homeData])
+  }, [homeData, fetchHomeData, fetchCompaniesDirectoryData, fetchCompaniesData])
 
   return (
     <>

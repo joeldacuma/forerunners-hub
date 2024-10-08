@@ -1,14 +1,5 @@
 import { ScrollspyProvider } from '~/common/providers'
-import {
-  json,
-  MetaFunction,
-  useActionData,
-  useLoaderData,
-  useNavigate,
-  useNavigation,
-  useSubmit,
-} from '@remix-run/react'
-import { ActionFunction, LoaderFunction } from '@remix-run/node'
+import { MetaFunction } from '@remix-run/react'
 import { Footer, NavHeader } from 'app/common'
 import {
   Table,
@@ -21,9 +12,9 @@ import {
   Image,
   Pagination,
   Spinner,
+  Link,
 } from '@nextui-org/react'
-import { fetchCompanies } from '~/api/strapi'
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import {
   useHomeData,
   useCompanyDirectoriesData,
@@ -44,48 +35,51 @@ export const meta: MetaFunction = () => {
 }
 
 export default function CompanyDirectories() {
-  const submit = useSubmit()
-  const navigate = useNavigate()
-  const navigation = useNavigation()
   const [isLoading, setLoading] = useState(false)
   const [page, setPage] = useState(1)
   const homeData = useHomeData()
   const companyDirectoriesData = useCompanyDirectoriesData()
-  const [companiesData, setCompaniesData] = useState(useCompaniesData())
+  const _companiesData = useCompaniesData()
+  const [companiesData, setCompaniesData] = useState(_companiesData)
 
   const fetchHomeData = useFetchHomeData()
   const fetchCompaniesDirectoryData = useFetchCompaniesDirectoryData()
   const fetchCompaniesData = useFetchCompaniesData()
 
-  const handlePaginationChange = useCallback(async (page: number) => {
+  const handlePaginationChange = async (page: number) => {
+    setLoading(true)
     setPage(page)
+    await fetchCompaniesData(page)
+    setCompaniesData(_companiesData)
     setLoading(false)
-    const data = await fetchCompanies(page)
-    if (data) {
-      setLoading(false)
-    }
-    setCompaniesData(data)
-  },[isLoading, companiesData])
+  }
 
   useEffect(() => {
+    if (_companiesData) {
+      setCompaniesData(_companiesData)
+    }
+
     if (!homeData && !companyDirectoriesData) {
       fetchHomeData()
       fetchCompaniesDirectoryData()
     }
-  }, [])
-
-  useEffect(() => {
-    const form = new FormData()
-    form.append('page', String(page))
-    form.append('pageSize', '5')
-    submit(form, { method: 'get' }) 
-  }, [page, submit])
+  }, [
+    page,
+    isLoading,
+    setLoading,
+    _companiesData,
+    setCompaniesData,
+    homeData,
+    companyDirectoriesData,
+    fetchCompaniesDirectoryData,
+    fetchHomeData,
+  ])
 
   const renderCell = (company: Company, columnKey: React.Key) => {
     switch (columnKey) {
       case 'logo':
         return (
-          <div className="py-6 flex justify-center text-center">
+          <div className="py-6">
             {company?.logo ? (
               <Image
                 className="w-60 h-20 object-contain"
@@ -102,7 +96,13 @@ export default function CompanyDirectories() {
           </div>
         )
       case 'name':
-        return <div className="py-6">{company.name}</div>
+        return (
+          <div className="py-6">
+            <Link className="text-xl hover:underline cursor-pointer">
+              {company.name}
+            </Link>
+          </div>
+        )
       default:
         return null
     }
@@ -133,7 +133,7 @@ export default function CompanyDirectories() {
                 <header className="bg-gradient-to-r from-blue-500 via-violet-500 to-fuchsia-500 text-white py-10">
                   <div className="container mx-auto px-6">
                     <h1 className="text-2xl font-bold mb-2 uppercase">
-                      {companyDirectoriesData?.data.companyDirectoryMainTitle}
+                      {companyDirectoriesData?.data?.companyDirectoryMainTitle}
                     </h1>
                     <p className="text-md">
                       {
@@ -146,29 +146,40 @@ export default function CompanyDirectories() {
               </div>
               <div className="lg:flex">
                 <div className="w-full p-6">
-                <div className="w-full flex justify-end gap-2 mb-6">
+                  <div className="w-full flex justify-end gap-2 mb-6">
                     <Button
                       size="sm"
+                      isDisabled={page <= 1}
                       onClick={() =>
-                        handlePaginationChange((page > 1) ? (page - 1) : 1)
+                        handlePaginationChange(page > 1 ? page - 1 : 1)
                       }
+                      className="text-primary"
                     >
                       Previous
                     </Button>
                     <Pagination
                       showShadow
                       color="primary"
-                      onChange={(page) =>
-                        handlePaginationChange(page)
-                      }
+                      className="text-primary"
+                      onChange={(page) => handlePaginationChange(page)}
                       page={page}
                       total={companiesData?.meta?.pagination?.pageCount || 1}
                     />
                     <Button
+                      isDisabled={
+                        page >=
+                        (companiesData?.meta?.pagination?.pageCount || 1)
+                      }
                       size="sm"
                       onClick={() =>
-                        handlePaginationChange((page <= (companiesData?.meta?.pagination?.pageCount || 1) ? (page + 1) : page))
+                        handlePaginationChange(
+                          page <=
+                            (companiesData?.meta?.pagination?.pageCount || 1)
+                            ? page + 1
+                            : page
+                        )
                       }
+                      className="text-primary"
                     >
                       Next
                     </Button>
@@ -186,25 +197,40 @@ export default function CompanyDirectories() {
                           <TableColumn
                             key={column.key}
                             className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                            style={{
+                              width: column.key === 'logo' ? '40px' : 'auto',
+                            }}
                           >
                             {column.label}
                           </TableColumn>
                         )}
                       </TableHeader>
-                        <TableBody isLoading={isLoading} items={companiesData?.data}>
-                          {(company: Company) => (
-                            <TableRow
-                              key={company.id}
-                              className="p-10 border-b border-gray-300"
-                            >
-                              {(columnKey) => (
-                                <TableCell>
-                                  {renderCell(company, columnKey)}
-                                </TableCell>
-                              )}
-                            </TableRow>
-                          )}
-                        </TableBody>   
+                      <TableBody
+                        loadingContent={<Spinner />}
+                        loadingState={
+                          isLoading || companiesData?.data?.length === 0
+                            ? 'loading'
+                            : 'idle'
+                        }
+                        items={companiesData?.data || []}
+                      >
+                        {(company: Company) => (
+                          <TableRow
+                            key={company.id}
+                            className="p-8 border-b border-gray-300"
+                          >
+                            {(columnKey) => (
+                              <TableCell
+                                style={{
+                                  width: columnKey === 'logo' ? '40px' : 'auto',
+                                }}
+                              >
+                                {renderCell(company, columnKey)}
+                              </TableCell>
+                            )}
+                          </TableRow>
+                        )}
+                      </TableBody>
                     </Table>
                   </div>
                 </div>

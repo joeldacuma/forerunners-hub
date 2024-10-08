@@ -533,9 +533,9 @@ export interface ApiCompanyDirectoryCompanyDirectory
   };
   attributes: {
     menu: Schema.Attribute.Component<'navigation.menu', true>;
-    companyDIrectoryMainTitle: Schema.Attribute.String;
+    companyDirectoryMainTitle: Schema.Attribute.String;
     companyDirectoryMainDescription: Schema.Attribute.Text;
-    companyDIrectoryListAriaLabel: Schema.Attribute.String;
+    companyDirectoryListAriaLabel: Schema.Attribute.String;
     createdAt: Schema.Attribute.DateTime;
     updatedAt: Schema.Attribute.DateTime;
     publishedAt: Schema.Attribute.DateTime;

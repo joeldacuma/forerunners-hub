@@ -17,13 +17,13 @@
       "repeatable": true,
       "component": "navigation.menu"
     },
-    "companyDIrectoryMainTitle": {
+    "companyDirectoryMainTitle": {
       "type": "string"
     },
     "companyDirectoryMainDescription": {
       "type": "text"
     },
-    "companyDIrectoryListAriaLabel": {
+    "companyDirectoryListAriaLabel": {
       "type": "string"
     }
   }
