@@ -6,7 +6,7 @@ import {
 } from 'app/common/models'
 
 // Fetch companies with pagination
-export const fetchCompanies = async (page = 1, pageSize = 10) => {
+export const fetchCompanies = async (page = 1, pageSize = 5) => {
     const response = await axiosInstance.get<CompaniesAPIResponse>(
       `/companies?pagination[page]=${page}&pagination[pageSize]=${pageSize}&pLevel`
     )

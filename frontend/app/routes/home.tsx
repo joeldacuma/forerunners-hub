@@ -78,7 +78,7 @@ export default function Home() {
     if (!homeData) {
       fetchHomeData()
       fetchCompaniesDirectoryData()
-      fetchCompaniesData()
+      fetchCompaniesData(1, 5)
     }
   }, [homeData])
 

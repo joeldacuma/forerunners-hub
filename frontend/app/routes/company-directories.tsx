@@ -4,11 +4,11 @@ import {
   MetaFunction,
   useActionData,
   useLoaderData,
+  useNavigate,
   useNavigation,
   useSubmit,
-  useNavigate,
 } from '@remix-run/react'
-import { ActionFunction } from '@remix-run/node'
+import { ActionFunction, LoaderFunction } from '@remix-run/node'
 import { Footer, NavHeader } from 'app/common'
 import {
   Table,
@@ -23,17 +23,17 @@ import {
   Spinner,
 } from '@nextui-org/react'
 import { fetchCompanies } from '~/api/strapi'
-import { useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import {
   useHomeData,
   useCompanyDirectoriesData,
   useCompaniesData,
-  useFetchCompaniesData,
   useFetchCompaniesDirectoryData,
   useFetchHomeData,
+  useFetchCompaniesData,
 } from 'app/common/app-store'
 import { LoadingSpinner } from 'app/components'
-import { Company, CompaniesAPIResponse } from '~/common/models'
+import { Company } from '~/common/models'
 
 export const meta: MetaFunction = () => {
   return [
@@ -43,54 +43,43 @@ export const meta: MetaFunction = () => {
   ]
 }
 
-// export const loader: LoaderFunction = async ({ request }) => {
-//   const url = new URL(request.url)
-//   const page = parseInt(url.searchParams.get('page') || '1', 10)
-//   const pageSize = parseInt(url.searchParams.get('pageSize') || '10', 10)
-//   const companies = await fetchCompanies(page, pageSize)
-
-//   return json({
-//     companies,
-//     page,
-//     pageSize,
-//   })
-// }
-
-export const action: ActionFunction = async ({ request }) => {
-  const url = new URL(request.url)
-  const page = Number(url.searchParams.get('page') || '1')
-  const pageSize = Number(url.searchParams.get('pageSize') || '10')
-  const companies = await fetchCompanies(page, pageSize)
-
-  return json({ companies })
-}
-
 export default function CompanyDirectories() {
-  const actionData = useActionData<typeof action>()
   const submit = useSubmit()
-  const navigate = useNavigation()
-  const isLoading = navigate.state === 'loading' || navigate.state === 'submitting'
+  const navigate = useNavigate()
+  const navigation = useNavigation()
+  const [isLoading, setLoading] = useState(false)
   const [page, setPage] = useState(1)
   const homeData = useHomeData()
   const companyDirectoriesData = useCompanyDirectoriesData()
-  const companiesData = useCompaniesData()
+  const [companiesData, setCompaniesData] = useState(useCompaniesData())
 
   const fetchHomeData = useFetchHomeData()
   const fetchCompaniesDirectoryData = useFetchCompaniesDirectoryData()
-  // const fetchCompaniesData = useFetchCompaniesData()
+  const fetchCompaniesData = useFetchCompaniesData()
 
-  useEffect(() => {    
+  const handlePaginationChange = useCallback(async (page: number) => {
+    setPage(page)
+    setLoading(false)
+    const data = await fetchCompanies(page)
+    if (data) {
+      setLoading(false)
+    }
+    setCompaniesData(data)
+  },[isLoading, companiesData])
+
+  useEffect(() => {
     if (!homeData && !companyDirectoriesData) {
       fetchHomeData()
       fetchCompaniesDirectoryData()
     }
+  }, [])
+
+  useEffect(() => {
     const form = new FormData()
     form.append('page', String(page))
-    form.append('pageSize', '10')
-  }, [
-    page,
-    submit
-  ])
+    form.append('pageSize', '5')
+    submit(form, { method: 'get' }) 
+  }, [page, submit])
 
   const renderCell = (company: Company, columnKey: React.Key) => {
     switch (columnKey) {
@@ -157,6 +146,33 @@ export default function CompanyDirectories() {
               </div>
               <div className="lg:flex">
                 <div className="w-full p-6">
+                <div className="w-full flex justify-end gap-2 mb-6">
+                    <Button
+                      size="sm"
+                      onClick={() =>
+                        handlePaginationChange((page > 1) ? (page - 1) : 1)
+                      }
+                    >
+                      Previous
+                    </Button>
+                    <Pagination
+                      showShadow
+                      color="primary"
+                      onChange={(page) =>
+                        handlePaginationChange(page)
+                      }
+                      page={page}
+                      total={companiesData?.meta?.pagination?.pageCount || 1}
+                    />
+                    <Button
+                      size="sm"
+                      onClick={() =>
+                        handlePaginationChange((page <= (companiesData?.meta?.pagination?.pageCount || 1) ? (page + 1) : page))
+                      }
+                    >
+                      Next
+                    </Button>
+                  </div>
                   <div className="mb-4">
                     <Table
                       removeWrapper
@@ -175,10 +191,7 @@ export default function CompanyDirectories() {
                           </TableColumn>
                         )}
                       </TableHeader>
-                      {isLoading ? (
-                        <Spinner />
-                      ) : (
-                        <TableBody items={companiesData?.data || []}>
+                        <TableBody isLoading={isLoading} items={companiesData?.data}>
                           {(company: Company) => (
                             <TableRow
                               key={company.id}
@@ -191,45 +204,8 @@ export default function CompanyDirectories() {
                               )}
                             </TableRow>
                           )}
-                        </TableBody>
-                      )}
+                        </TableBody>   
                     </Table>
-                  </div>
-                  <div className="w-full flex justify-end gap-2">
-                    {/* <Button
-                      size="sm"
-                      onClick={() =>
-                        setPage((prev) => (prev > 1 ? prev - 1 : prev))
-                      }
-                      isDisabled={page <= 1 || isLoading}
-                    >
-                      Previous
-                    </Button>
-                    <Pagination
-                      showShadow
-                      color="primary"
-                      onChange={setPage}
-                      page={page}
-                      total={companiesData?.meta?.pagination?.pageCount || 1}
-                    />
-                    <Button
-                      size="sm"
-                      isDisabled={
-                        page >=
-                          (companiesData?.meta?.pagination?.pageCount || 1) ||
-                        isLoading
-                      }
-                      onClick={() =>
-                        setPage((prev) =>
-                          prev <
-                          (companiesData?.meta?.pagination?.pageCount || 1)
-                            ? prev + 1
-                            : prev
-                        )
-                      }
-                    >
-                      Next
-                    </Button> */}
                   </div>
                 </div>
                 <div className="w-full p-4"></div>

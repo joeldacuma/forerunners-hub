@@ -10,7 +10,7 @@ interface Props {
   isLoading: boolean
   fetchHomeData: () => Promise<void>
   fetchCompaniesDirectoryData: () => Promise<void>
-  fetchCompaniesData: () => Promise<void>
+  fetchCompaniesData: (page?: number, pageSize?: number) => Promise<void>
 }
 
 export const createPageDataSlice: StateCreator<Props> = (set) => ({
@@ -37,10 +37,10 @@ export const createPageDataSlice: StateCreator<Props> = (set) => ({
       set({ error: 'Failed to fetch company directories data', isLoading: false })
     }
   },
-  fetchCompaniesData: async () => {
+  fetchCompaniesData: async (page = 1, pageSize = 10) => {
     set({ isLoading: true })
     try {
-      const response = await fetchCompanies()
+      const response = await fetchCompanies(page, pageSize)
       set({ companiesData: response, isLoading: false })
     } catch (error) {
       set({ error: 'Failed to fetch companies data', isLoading: false })
