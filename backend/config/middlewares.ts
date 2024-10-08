@@ -39,7 +39,7 @@ export default [
         "X-Timezone",
         "X-Timezone-Name",
       ],
-      origin: process.env.WHITELIST_ORIGIN,
+      origin: "*"
     },
   },
   "strapi::poweredBy",

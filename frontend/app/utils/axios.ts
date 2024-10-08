@@ -8,6 +8,7 @@ export const axiosInstance = axios.create({
   headers: { 
     "X-Custom-Header": "Forerunners HUB",
     "Access-Control-Allow-Origin": "*",
+    "Content-Type" : "application/json"
   },
 });
 
