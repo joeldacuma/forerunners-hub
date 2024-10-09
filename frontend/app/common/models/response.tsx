@@ -5,6 +5,7 @@ export interface Home {
   bannerTitle: string
   bannerActionText: string
   bannerDescription: string
+  productSectionTitle: string
   products: ProductProps[]
   companySectionTitle: string
   companyButtonText: string
@@ -49,7 +50,7 @@ export interface CompanyDirectory {
 }
 
 export interface CompaniesAPIResponse {
-  data?: Company[]
+  data: Company[] | []
   meta?: {
     pagination?: {
       page: number

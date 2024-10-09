@@ -580,6 +580,7 @@ export interface ApiHomeHome extends Struct.SingleTypeSchema {
     aboutUsDescription2: Schema.Attribute.Text;
     aboutUsDescription3: Schema.Attribute.Text;
     Footer: Schema.Attribute.Component<'footer.main-footer', false>;
+    productSectionTitle: Schema.Attribute.String;
     createdAt: Schema.Attribute.DateTime;
     updatedAt: Schema.Attribute.DateTime;
     publishedAt: Schema.Attribute.DateTime;

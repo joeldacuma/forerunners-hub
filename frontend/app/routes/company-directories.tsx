@@ -56,15 +56,17 @@ export default function CompanyDirectories() {
 
   useEffect(() => {
     if (_companiesData) {
+      (_companiesData.data.length === 0)
       setCompaniesData(_companiesData)
     }
-
+    
     if (!homeData && !companyDirectoriesData) {
       fetchHomeData()
       fetchCompaniesDirectoryData()
     }
   }, [
     page,
+    companiesData,
     isLoading,
     setLoading,
     _companiesData,
@@ -206,13 +208,18 @@ export default function CompanyDirectories() {
                         )}
                       </TableHeader>
                       <TableBody
+                        emptyContent={
+                          <div>
+                            No data available
+                          </div>
+                        }
                         loadingContent={<Spinner />}
                         loadingState={
-                          isLoading || companiesData?.data?.length === 0
+                          isLoading
                             ? 'loading'
                             : 'idle'
                         }
-                        items={companiesData?.data || []}
+                        items={companiesData?.data && companiesData.data.length > 0 ? companiesData.data : []}
                       >
                         {(company: Company) => (
                           <TableRow

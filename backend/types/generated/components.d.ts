@@ -1,32 +1,5 @@
 import type { Struct, Schema } from '@strapi/strapi';
 
-export interface ListsGallery extends Struct.ComponentSchema {
-  collectionName: 'components_lists_galleries';
-  info: {
-    displayName: 'Gallery';
-    icon: 'picture';
-  };
-  attributes: {
-    image: Schema.Attribute.Media<'images'>;
-    description: Schema.Attribute.String;
-  };
-}
-
-export interface ListsCards extends Struct.ComponentSchema {
-  collectionName: 'components_lists_cards';
-  info: {
-    displayName: 'Cards';
-    icon: 'server';
-    description: '';
-  };
-  attributes: {
-    Title: Schema.Attribute.String;
-    Description: Schema.Attribute.Text;
-    ActionButtonText: Schema.Attribute.String;
-    ActionButtonUrl: Schema.Attribute.String;
-  };
-}
-
 export interface NavigationSubMenu extends Struct.ComponentSchema {
   collectionName: 'components_navigation_sub_menus';
   info: {
@@ -57,6 +30,33 @@ export interface NavigationMenu extends Struct.ComponentSchema {
   };
 }
 
+export interface ListsGallery extends Struct.ComponentSchema {
+  collectionName: 'components_lists_galleries';
+  info: {
+    displayName: 'Gallery';
+    icon: 'picture';
+  };
+  attributes: {
+    image: Schema.Attribute.Media<'images'>;
+    description: Schema.Attribute.String;
+  };
+}
+
+export interface ListsCards extends Struct.ComponentSchema {
+  collectionName: 'components_lists_cards';
+  info: {
+    displayName: 'Cards';
+    icon: 'server';
+    description: '';
+  };
+  attributes: {
+    Title: Schema.Attribute.String;
+    Description: Schema.Attribute.Text;
+    ActionButtonText: Schema.Attribute.String;
+    ActionButtonUrl: Schema.Attribute.String;
+  };
+}
+
 export interface FooterMainFooter extends Struct.ComponentSchema {
   collectionName: 'components_footer_main_footers';
   info: {
@@ -82,10 +82,10 @@ export interface FooterMainFooter extends Struct.ComponentSchema {
 declare module '@strapi/strapi' {
   export module Public {
     export interface ComponentSchemas {
-      'lists.gallery': ListsGallery;
-      'lists.cards': ListsCards;
       'navigation.sub-menu': NavigationSubMenu;
       'navigation.menu': NavigationMenu;
+      'lists.gallery': ListsGallery;
+      'lists.cards': ListsCards;
       'footer.main-footer': FooterMainFooter;
     }
   }

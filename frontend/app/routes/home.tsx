@@ -95,8 +95,8 @@ export default function Home() {
                 actionText={homeData.data?.bannerActionText}
               />
             </div>
-            <div id="products">
-              <ProductSection data={homeData.data?.products} />
+            <div id="offers">
+              <ProductSection title={homeData.data?.productSectionTitle} data={homeData.data?.products} />
             </div>
             <div id="company-directories">
               <CompanyDirectorySection

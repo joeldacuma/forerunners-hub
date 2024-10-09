@@ -10,6 +10,7 @@ import {
 import { ProductProps } from 'app/common/models'
 
 interface ProductSectionProps {
+  title: string
   data: ProductProps[]
 }
 
@@ -20,15 +21,15 @@ const shakeAnimation = {
   },
 }
 
-export const ProductSection: React.FC<ProductSectionProps> = ({ data }) => {
+export const ProductSection: React.FC<ProductSectionProps> = ({ title, data }) => {
   const [hoveredCard, setHoveredCard] = useState<number | null>(null)
 
   return (
     <div className="relative h-[dvh] min-h-[600px] w-full py-20 px-4 md:px-8">
       <div className="max-w-6xl mx-auto">
-        <h2 className="text-3xl font-bold text-center mb-12 text-light-blue">
-          Our Products
-        </h2>
+        <h1 className="text-4xl font-bold text-center mb-12 text-light-blue">
+         {title}
+        </h1>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
           {data.map((card, index) => (
             <motion.div
