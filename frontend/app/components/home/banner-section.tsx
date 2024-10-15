@@ -24,7 +24,7 @@ export const BannerSection: React.FC<BannerProps> = ({
 
       <div className="flex z-10 flex h-full items-center justify-center px-4">
         <div className="max-w-4xl mx-auto text-center">
-          <h1 className="mb-4 text-4xl font-bold tracking-tight text-white sm:text-5xl md:text-6xl">
+          <h1 className="mb-4 text-5xl font-bold tracking-tight text-white sm:text-4xl md:text-5xl">
             {title}
           </h1>
           <p className="mb-8 text-lg text-blue-100 sm:text-xl">{description}</p>

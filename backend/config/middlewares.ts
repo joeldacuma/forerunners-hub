@@ -35,7 +35,12 @@ export default ({ env }) => ([
       origin: env.array('WHITELIST_ORIGIN'),
     },
   },
-  "strapi::poweredBy",
+  {
+    name: "strapi::poweredBy",
+    config: {
+      poweredBy: 'Forerunners HUB'
+    }    
+  },
   "strapi::query",
   "strapi::body",
   "strapi::session",

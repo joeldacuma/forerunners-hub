@@ -121,6 +121,7 @@ export interface NewsLetterParams {
 export interface ProductProps {
   id: number
   Title: string
+  image: Image
   Description: string
   ActionButtonText: string
   ActionButtonUrl: string

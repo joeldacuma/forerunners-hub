@@ -54,6 +54,7 @@ export interface ListsCards extends Struct.ComponentSchema {
     Description: Schema.Attribute.Text;
     ActionButtonText: Schema.Attribute.String;
     ActionButtonUrl: Schema.Attribute.String;
+    image: Schema.Attribute.Media<'images'>;
   };
 }
 
