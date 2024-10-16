@@ -8,7 +8,14 @@
     "description": ""
   },
   "options": {
-    "draftAndPublish": false
+    "draftAndPublish": false,
+    "privateAttributes": [
+      "publishedAt",
+      "createdAt",
+      "updatedAt",
+      "locale",
+      "localizations"
+    ]
   },
   "pluginOptions": {},
   "attributes": {
@@ -38,6 +45,11 @@
     "active": {
       "type": "boolean",
       "default": true
+    },
+    "industry": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::industry.industry"
     }
   }
 }

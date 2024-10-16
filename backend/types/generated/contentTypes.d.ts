@@ -495,6 +495,13 @@ export interface ApiCompanyCompany extends Struct.CollectionTypeSchema {
   };
   options: {
     draftAndPublish: false;
+    privateAttributes: [
+      'publishedAt',
+      'createdAt',
+      'updatedAt',
+      'locale',
+      'localizations',
+    ];
   };
   attributes: {
     name: Schema.Attribute.String;
@@ -504,6 +511,7 @@ export interface ApiCompanyCompany extends Struct.CollectionTypeSchema {
     valuePropositiion: Schema.Attribute.Text;
     website: Schema.Attribute.String;
     active: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
+    industry: Schema.Attribute.Relation<'oneToOne', 'api::industry.industry'>;
     createdAt: Schema.Attribute.DateTime;
     updatedAt: Schema.Attribute.DateTime;
     publishedAt: Schema.Attribute.DateTime;
@@ -530,6 +538,13 @@ export interface ApiCompanyDirectoryCompanyDirectory
   };
   options: {
     draftAndPublish: true;
+    privateAttributes: [
+      'publishedAt',
+      'createdAt',
+      'updatedAt',
+      'locale',
+      'localizations',
+    ];
   };
   attributes: {
     menu: Schema.Attribute.Component<'navigation.menu', true>;
@@ -561,6 +576,13 @@ export interface ApiHomeHome extends Struct.SingleTypeSchema {
   };
   options: {
     draftAndPublish: true;
+    privateAttributes: [
+      'publishedAt',
+      'createdAt',
+      'updatedAt',
+      'locale',
+      'localizations',
+    ];
   };
   attributes: {
     menu: Schema.Attribute.Component<'navigation.menu', true>;
@@ -590,6 +612,42 @@ export interface ApiHomeHome extends Struct.SingleTypeSchema {
       Schema.Attribute.Private;
     locale: Schema.Attribute.String;
     localizations: Schema.Attribute.Relation<'oneToMany', 'api::home.home'>;
+  };
+}
+
+export interface ApiIndustryIndustry extends Struct.CollectionTypeSchema {
+  collectionName: 'industries';
+  info: {
+    singularName: 'industry';
+    pluralName: 'industries';
+    displayName: 'Industries';
+  };
+  options: {
+    draftAndPublish: false;
+    privateAttributes: [
+      'id',
+      'publishedAt',
+      'createdAt',
+      'updatedAt',
+      'locale',
+      'localizations',
+    ];
+  };
+  attributes: {
+    title: Schema.Attribute.String & Schema.Attribute.Required;
+    uid: Schema.Attribute.UID<'title'> & Schema.Attribute.Required;
+    createdAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    publishedAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::industry.industry'
+    >;
   };
 }
 
@@ -1002,6 +1060,7 @@ declare module '@strapi/strapi' {
       'api::company.company': ApiCompanyCompany;
       'api::company-directory.company-directory': ApiCompanyDirectoryCompanyDirectory;
       'api::home.home': ApiHomeHome;
+      'api::industry.industry': ApiIndustryIndustry;
       'api::newsletter.newsletter': ApiNewsletterNewsletter;
       'admin::permission': AdminPermission;
       'admin::user': AdminUser;

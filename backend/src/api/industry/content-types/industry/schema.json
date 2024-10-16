@@ -1,0 +1,32 @@
+{
+  "kind": "collectionType",
+  "collectionName": "industries",
+  "info": {
+    "singularName": "industry",
+    "pluralName": "industries",
+    "displayName": "Industries"
+  },
+  "options": {
+    "draftAndPublish": false,
+    "privateAttributes": [
+      "id",
+      "publishedAt",
+      "createdAt",
+      "updatedAt",
+      "locale",
+      "localizations"
+    ]
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "uid": {
+      "type": "uid",
+      "targetField": "title",
+      "required": true
+    }
+  }
+}
