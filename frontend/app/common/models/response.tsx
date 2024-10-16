@@ -19,9 +19,15 @@ export interface Home {
   Footer: FooterProps
 }
 
-export interface Company {
+export interface Industry {
   id: number
   documentId: string
+  title: string
+  uid: string
+}
+
+export interface Company {
+  id: number
   name: string
   overview?: string
   contactHR?: string
@@ -29,58 +35,46 @@ export interface Company {
   createdAt: string
   updatedAt: string
   publishedAt: string
-  locale?: string
   website?: string
   logo: Image[]
-  localizations?: string
+  industry: Industry | null
 }
 
 export interface CompanyDirectory {
   id: number
   documentId: string
-  createdAt: string
-  updatedAt: string
-  publishedAt: string
-  locale: string | null
   companyDirectoryMainTitle: string
   companyDirectoryMainDescription: string
   companyDirectoryListAriaLabel: string
   menu: MenuProps[]
-  localizations: string[]
+}
+
+interface Pagination {
+  page: number
+  pageSize: number
+  pageCount: number
+  total: number
 }
 
 export interface CompaniesAPIResponse {
   data: Company[] | []
   meta?: {
-    pagination?: {
-      page: number
-      pageSize: number
-      pageCount: number
-      total: number
-    }
+    pagination?: Pagination
   }
 }
 
 export interface HomeAPIResponse {
   data: Home
   meta: {
-    pagination?: {
-      page: number
-      pageSize: number
-      pageCount: number
-      total: number
-    } 
+    pagination?: Pagination
   }
 }
 
 export interface CompanyDirectoriesResponse {
   data: CompanyDirectory
   meta: {
-    pagination?: {
-      page: number
-      pageSize: number
-      pageCount: number
-      total: number
-    } 
+    pagination?: Pagination
   }
 }
+
+export type CompanyWithoutDocumentId = Omit<Company, 'documentId'>

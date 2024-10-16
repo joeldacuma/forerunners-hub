@@ -14,7 +14,9 @@
       "createdAt",
       "updatedAt",
       "locale",
-      "localizations"
+      "localizations",
+      "id",
+      "documentId"
     ]
   },
   "pluginOptions": {},

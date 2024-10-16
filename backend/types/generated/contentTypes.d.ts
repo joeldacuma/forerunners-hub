@@ -501,6 +501,8 @@ export interface ApiCompanyCompany extends Struct.CollectionTypeSchema {
       'updatedAt',
       'locale',
       'localizations',
+      'id',
+      'documentId',
     ];
   };
   attributes: {

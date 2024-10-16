@@ -13,6 +13,7 @@ import {
   Pagination,
   Spinner,
   Link,
+  Input,
 } from '@nextui-org/react'
 import { useEffect, useMemo, useState } from 'react'
 import {
@@ -54,12 +55,16 @@ export default function CompanyDirectories() {
     setLoading(false)
   }
 
+  const handleSearchCompany = async (name: string) => {
+
+  }
+
   useEffect(() => {
     if (_companiesData) {
-      (_companiesData.data.length === 0)
+      _companiesData.data.length === 0
       setCompaniesData(_companiesData)
     }
-    
+
     if (!homeData && !companyDirectoriesData) {
       fetchHomeData()
       fetchCompaniesDirectoryData()
@@ -105,6 +110,14 @@ export default function CompanyDirectories() {
             </Link>
           </div>
         )
+      case 'industry':
+        return (
+          <div className="py-6">
+            <p className="text-md">
+              {company.industry ? company.industry.title : 'N/A'}
+            </p>
+          </div>
+        )
       default:
         return null
     }
@@ -120,6 +133,10 @@ export default function CompanyDirectories() {
         key: 'name',
         label: 'NAME',
       },
+      {
+        key: 'industry',
+        label: 'INDUSTRY',
+      },
     ],
     []
   )
@@ -132,7 +149,7 @@ export default function CompanyDirectories() {
             <NavHeader menus={companyDirectoriesData?.data.menu} />
             <div className="lg:px-20">
               <div className="p-6 mt-4">
-                <header className="bg-gradient-to-r from-blue-500 via-violet-500 to-fuchsia-500 text-white py-10">
+                <div className="bg-gradient-to-r from-blue-500 via-violet-500 to-fuchsia-500 text-white py-10">
                   <div className="container mx-auto px-6">
                     <h1 className="text-2xl font-bold mb-2 uppercase">
                       {companyDirectoriesData?.data?.companyDirectoryMainTitle}
@@ -144,47 +161,59 @@ export default function CompanyDirectories() {
                       }
                     </p>
                   </div>
-                </header>
+                </div>
               </div>
               <div className="lg:flex">
                 <div className="w-full p-6">
-                  <div className="w-full flex justify-end gap-2 mb-6">
-                    <Button
-                      size="sm"
-                      isDisabled={page <= 1}
-                      onClick={() =>
-                        handlePaginationChange(page > 1 ? page - 1 : 1)
-                      }
-                      className="text-primary"
-                    >
-                      Previous
-                    </Button>
-                    <Pagination
-                      showShadow
-                      color="primary"
-                      className="text-primary"
-                      onChange={(page) => handlePaginationChange(page)}
-                      page={page}
-                      total={companiesData?.meta?.pagination?.pageCount || 1}
-                    />
-                    <Button
-                      isDisabled={
-                        page >=
-                        (companiesData?.meta?.pagination?.pageCount || 1)
-                      }
-                      size="sm"
-                      onClick={() =>
-                        handlePaginationChange(
-                          page <=
-                            (companiesData?.meta?.pagination?.pageCount || 1)
-                            ? page + 1
-                            : page
-                        )
-                      }
-                      className="text-primary"
-                    >
-                      Next
-                    </Button>
+                  <div className="w-full sm:flex justify-between mb-6">
+                    <div className="w-full sm:p-4">
+                      <Input
+                        isClearable
+                        type="text"
+                        variant="bordered"
+                        placeholder="Search company name"
+                        onValueChange={(value: string) => handleSearchCompany(value)}
+                        onClear={() => console.log('input cleared')}
+                      />
+                    </div>
+                    <div className="w-full flex justify-end gap-2 sm:mb-6 mt-6">
+                      <Button
+                        size="sm"
+                        isDisabled={page <= 1}
+                        onClick={() =>
+                          handlePaginationChange(page > 1 ? page - 1 : 1)
+                        }
+                        className="text-primary"
+                      >
+                        Previous
+                      </Button>
+                      <Pagination
+                        showShadow
+                        color="primary"
+                        className="text-primary"
+                        onChange={(page) => handlePaginationChange(page)}
+                        page={page}
+                        total={companiesData?.meta?.pagination?.pageCount || 1}
+                      />
+                      <Button
+                        isDisabled={
+                          page >=
+                          (companiesData?.meta?.pagination?.pageCount || 1)
+                        }
+                        size="sm"
+                        onClick={() =>
+                          handlePaginationChange(
+                            page <=
+                              (companiesData?.meta?.pagination?.pageCount || 1)
+                              ? page + 1
+                              : page
+                          )
+                        }
+                        className="text-primary"
+                      >
+                        Next
+                      </Button>
+                    </div>
                   </div>
                   <div className="mb-4">
                     <Table
@@ -198,7 +227,7 @@ export default function CompanyDirectories() {
                         {(column) => (
                           <TableColumn
                             key={column.key}
-                            className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                            className="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider"
                             style={{
                               width: column.key === 'logo' ? '40px' : 'auto',
                             }}
@@ -208,18 +237,14 @@ export default function CompanyDirectories() {
                         )}
                       </TableHeader>
                       <TableBody
-                        emptyContent={
-                          <div>
-                            No data available
-                          </div>
-                        }
+                        emptyContent={<div>No data available</div>}
                         loadingContent={<Spinner />}
-                        loadingState={
-                          isLoading
-                            ? 'loading'
-                            : 'idle'
+                        loadingState={isLoading ? 'loading' : 'idle'}
+                        items={
+                          companiesData?.data && companiesData.data.length > 0
+                            ? companiesData.data
+                            : []
                         }
-                        items={companiesData?.data && companiesData.data.length > 0 ? companiesData.data : []}
                       >
                         {(company: Company) => (
                           <TableRow
@@ -239,6 +264,12 @@ export default function CompanyDirectories() {
                         )}
                       </TableBody>
                     </Table>
+                  </div>
+                  <div className="w-full flex justify-end gap-2 mb-4">
+                    <p className="text-gray-500">
+                      {companiesData?.meta &&
+                        `Total: ${companiesData?.meta.pagination?.total} companies`}
+                    </p>
                   </div>
                 </div>
                 <div className="w-full p-4"></div>
