@@ -65,12 +65,14 @@ export const NavHeader: React.FC<NavHeaderProps> = ({ menus }) => {
       </NavbarContent>
       <NavbarContent className="hidden sm:flex gap-x-10" justify="end">
         <NavbarItem>
+          <MenuLink href="/login">
           <Button
             className="bg-light-violet text-white font-bold"
             variant="flat"
           >
-            Early Access
+            GET STARTED
           </Button>
+          </MenuLink>
         </NavbarItem>
       </NavbarContent>
       <NavbarContent className="sm:hidden" justify="end">
@@ -90,12 +92,14 @@ export const NavHeader: React.FC<NavHeaderProps> = ({ menus }) => {
           </NavbarMenuItem>
         ))}
         <NavbarItem>
+          <MenuLink href="/login">
           <Button
             className="bg-light-violet text-white font-bold"
             variant="flat"
           >
-            Request Demo
+            GET STARTED
           </Button>
+          </MenuLink>
         </NavbarItem>
       </NavbarMenu>
     </Navbar>
