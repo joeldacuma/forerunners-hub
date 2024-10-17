@@ -1,12 +1,6 @@
 import React, { useState } from 'react'
 import { motion } from 'framer-motion'
-import {
-  Card,
-  CardBody,
-  CardFooter,
-  CardHeader,
-  Button,
-} from '@nextui-org/react'
+import { Card, CardBody, Button } from '@nextui-org/react'
 import { ProductProps } from 'app/common/models'
 
 interface ProductSectionProps {
@@ -43,11 +37,6 @@ export const ProductSection: React.FC<ProductSectionProps> = ({
               onHoverEnd={() => setHoveredCard(null)}
             >
               <Card className="h-[40vh]">
-                {/* <CardHeader className="flex-col items-start px-4 py-5 bg-primary/10">
-                  <h3 className="text-xl font-semibold text-sky-700">
-                    {card.Title}
-                  </h3>
-                </CardHeader> */}
                 <div
                   className="relative h-full bg-center"
                   style={{ backgroundImage: `url('${card.image.url}')` }}
@@ -58,26 +47,21 @@ export const ProductSection: React.FC<ProductSectionProps> = ({
                       <h3 className="text-2xl font-semibold text-white mb-4">
                         {card.Title}
                       </h3>
-                      <p className="text-white/90 mb-6 text-lg">{card.Description}</p>
-                      <Button className="mt-4 px-6 py-2 
+                      <p className="text-white/90 mb-6 text-lg">
+                        {card.Description}
+                      </p>
+                      <Button
+                        className="mt-4 px-6 py-2 
                               font-bold
                               bg-white text-light-blue
                               rounded-full hover:bg-opacity-90 
-                              transition-colors duration-200">
+                              transition-colors duration-200"
+                      >
                         {card.ActionButtonText}
                       </Button>
                     </CardBody>
                   </div>
                 </div>
-                {/* <CardFooter className="text-center justify-center px-4 py-3">
-                  <Button
-                    variant="bordered"
-                    color="primary"
-                    className="w-full text-lg font-medium hover:underline"
-                  >
-                    {card.ActionButtonText}
-                  </Button>
-                </CardFooter>   */}
               </Card>
             </motion.div>
           ))}

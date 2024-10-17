@@ -9,7 +9,8 @@ const upperFirst = _.upperFirst
 
 type StateCreatorArray<S> =
   | StateCreator<S, [['zustand/immer', never], ['zustand/persist', unknown]]>
-  | Array<StateCreator<S>>
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  | Array<StateCreator<any>>
 
 export function createImmerStore<S>(
   slices: StateCreatorArray<S>,

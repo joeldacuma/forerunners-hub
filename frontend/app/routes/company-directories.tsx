@@ -15,7 +15,7 @@ import {
   Link,
   Input,
 } from '@nextui-org/react'
-import { useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import {
   useHomeData,
   useCompanyDirectoriesData,
@@ -26,6 +26,8 @@ import {
 } from 'app/common/app-store'
 import { LoadingSpinner } from 'app/components'
 import { Company } from '~/common/models'
+import { onSearchCompanyByName } from 'app/common/store-slices'
+import { MagnifyingGlassIcon } from '@radix-ui/react-icons'
 
 export const meta: MetaFunction = () => {
   return [
@@ -37,6 +39,7 @@ export const meta: MetaFunction = () => {
 
 export default function CompanyDirectories() {
   const [isLoading, setLoading] = useState(false)
+  const [searchCompanyName, setSearchCompanyName] = useState<string>('')
   const [page, setPage] = useState(1)
   const homeData = useHomeData()
   const companyDirectoriesData = useCompanyDirectoriesData()
@@ -47,16 +50,44 @@ export default function CompanyDirectories() {
   const fetchCompaniesDirectoryData = useFetchCompaniesDirectoryData()
   const fetchCompaniesData = useFetchCompaniesData()
 
-  const handlePaginationChange = async (page: number) => {
+  const handlePaginationChange = useCallback(async (page: number) => {
     setLoading(true)
     setPage(page)
-    await fetchCompaniesData(page)
+    const response = !searchCompanyName
+      ? await fetchCompaniesData(page)
+      : await onSearchCompanyByName(searchCompanyName, page)
     setCompaniesData(_companiesData)
     setLoading(false)
-  }
+  }, [
+    page,
+    searchCompanyName,
+    _companiesData,
+    isLoading,
+    setLoading,
+    setPage,
+    fetchCompaniesData,
+    onSearchCompanyByName,
+    setCompaniesData,
+  ])
 
-  const handleSearchCompany = async (name: string) => {
+  const handleSearchCompany = useCallback(async () => {
+    setLoading(true)
+    setPage(1)
+    await onSearchCompanyByName(searchCompanyName, 1)
+    setLoading(false)
+  }, [
+    page,
+    searchCompanyName,
+    setLoading,
+    isLoading,
+    onSearchCompanyByName,
+    setPage,
+  ])
 
+  const handleSearchClear = async () => {
+    setLoading(true)
+    await fetchCompaniesData()
+    setLoading(false)
   }
 
   useEffect(() => {
@@ -80,6 +111,7 @@ export default function CompanyDirectories() {
     companyDirectoriesData,
     fetchCompaniesDirectoryData,
     fetchHomeData,
+    fetchCompaniesData,
   ])
 
   const renderCell = (company: Company, columnKey: React.Key) => {
@@ -166,15 +198,31 @@ export default function CompanyDirectories() {
               <div className="lg:flex">
                 <div className="w-full p-6">
                   <div className="w-full sm:flex justify-between mb-6">
-                    <div className="w-full sm:p-4">
+                    <div className="w-full flex sm:p-4">
                       <Input
+                        classNames={{
+                          input:
+                            'rounded-none rounded-tl-medium rounded-bl-medium',
+                          inputWrapper:
+                            'rounded-none rounded-tl-medium rounded-bl-medium',
+                        }}
                         isClearable
                         type="text"
                         variant="bordered"
                         placeholder="Search company name"
-                        onValueChange={(value: string) => handleSearchCompany(value)}
-                        onClear={() => console.log('input cleared')}
+                        onValueChange={setSearchCompanyName}
+                        onClear={handleSearchClear}
                       />
+                      <Button
+                        className="rounded-none rounded-tr-medium rounded-br-medium"
+                        isIconOnly
+                        color="primary"
+                        variant="ghost"
+                        aria-label="Search company"
+                        onClick={handleSearchCompany}
+                      >
+                        <MagnifyingGlassIcon />
+                      </Button>
                     </div>
                     <div className="w-full flex justify-end gap-2 sm:mb-6 mt-6">
                       <Button

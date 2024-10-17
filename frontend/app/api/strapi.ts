@@ -3,8 +3,6 @@ import {
   HomeAPIResponse,
   CompanyDirectoriesResponse,
   CompaniesAPIResponse,
-  CompanyWithoutDocumentId,
-  Company,
 } from 'app/common/models'
 
 // Fetch companies with pagination
@@ -27,9 +25,9 @@ export const fetchHome = async () => {
   return response.data
 }
 
-export const fetchCompanybyName = async (name: string) => {
+export const fetchCompanybyName = async (name: string, page: number = 1, pageSize: number = 5) => {
   const response = await axiosInstance.get<CompaniesAPIResponse>(
-    `/companies?filters[name][$contains]=${name}`
+    `/companies?filters[name][$contains]=${name}&pagination[page]=${page}&pagination[pageSize]=${pageSize}&pLevel`
   )
   return response.data
 }
