@@ -1,4 +1,4 @@
-import { createImmerStore, createStoreHooks } from 'app/utils/zustand'
+import { createImmerStore, createStoreHooks } from 'app/utils'
 import { createPageDataSlice, createCompanySlice } from 'app/common/store-slices'
 
 export type ApplicationStore = ReturnType<typeof createPageDataSlice> &

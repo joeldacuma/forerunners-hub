@@ -40,6 +40,13 @@ export interface Company {
   industry: Industry | null
 }
 
+export interface User {
+  id: number
+  documentId: string
+  username: string
+  email: string
+}
+
 export interface CompanyDirectory {
   id: number
   documentId: string
@@ -77,4 +84,11 @@ export interface CompanyDirectoriesResponse {
   }
 }
 
-export type CompanyWithoutDocumentId = Omit<Company, 'documentId'>
+export interface AuthResponse {
+  jwt: string
+  user: User
+}
+
+export interface ResponseError {
+  message: string
+}

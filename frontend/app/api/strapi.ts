@@ -3,9 +3,26 @@ import {
   HomeAPIResponse,
   CompanyDirectoriesResponse,
   CompaniesAPIResponse,
+  AuthResponse,
 } from 'app/common/models'
 
-// Fetch companies with pagination
+export const loginAuthUser = async (email: string, password: string) => {
+  const response = await axiosInstance.post<AuthResponse>('/auth/local', {
+   identifier: email,
+   password,
+  })
+  return response.data
+}
+
+export const fetchUserInfo = async (jwt: string) => {
+  const response = await axiosInstance.get('/users/me?pLevel', {
+    headers: {
+      Authorization: `Bearer ${jwt}`
+    }
+  })
+  return response.data
+}
+
 export const fetchCompanies = async (page = 1, pageSize = 5) => {
   const response = await axiosInstance.get<CompaniesAPIResponse>(
     `/companies?pagination[page]=${page}&pagination[pageSize]=${pageSize}&pLevel`
