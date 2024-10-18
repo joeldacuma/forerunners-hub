@@ -126,3 +126,8 @@ export interface ProductProps {
   ActionButtonText: string
   ActionButtonUrl: string
 }
+
+export interface LoginProps {
+  email: string
+  password: string
+}

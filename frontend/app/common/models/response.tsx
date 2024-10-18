@@ -90,5 +90,11 @@ export interface AuthResponse {
 }
 
 export interface ResponseError {
-  message: string
+  data: string | null
+  error: {
+    status: number
+    name: string
+    message: string
+    details: string
+  }
 }

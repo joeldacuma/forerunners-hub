@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, ChangeEvent, useEffect, useCallback } from 'react'
 import {
   Card,
   CardBody,
@@ -12,17 +12,35 @@ import {
 } from '@nextui-org/react'
 import { EyeIcon, EyeOffIcon } from 'lucide-react'
 import { Wave } from '~/components'
-import { ActionFunctionArgs, json } from '@remix-run/node'
+import { ActionFunctionArgs, LoaderFunctionArgs, json } from '@remix-run/node'
 import { loginAuthUser } from 'app/api/strapi'
-import { Form } from '@remix-run/react'
-import { loginUserSession } from 'app/session.server'
-import axios, { AxiosError } from "axios"
+import { Form, redirect, useActionData, useNavigation } from '@remix-run/react'
+import { getUserSession, loginUserSession } from 'app/session.server'
+import axios, { AxiosError } from 'axios'
 import { ResponseError } from 'app/common/models'
+import { LoginProps } from 'app/common/models'
+
+export const loader = async ({ request }: LoaderFunctionArgs) => {
+  const jwt = await getUserSession(request)
+  if (jwt) {
+    return redirect('/dashboard')
+  }
+}
 
 export const action = async ({ request }: ActionFunctionArgs) => {
   const formData = await request.formData()
-  const email = formData.get('email') as string
-  const password = formData.get('password') as string
+  const email = formData.get('email')?.toString().trim()
+  const password = formData.get('password')?.toString().trim()
+
+  if (!email || !password) {
+    return json({ error: 'email and password is required.' }, { status: 400 })
+  }
+
+  const emailRegex =
+    /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/
+  if (!emailRegex.test(email)) {
+    return json({ error: 'Invalid email format' }, { status: 400 })
+  }
 
   try {
     const response = await loginAuthUser(email, password)
@@ -30,17 +48,38 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   } catch (error) {
     if (axios.isAxiosError(error)) {
       const axiosError = error as AxiosError<ResponseError>
-      const errorMessage = axiosError.response?.data.message || "An error occurred."
-      return json({ error: errorMessage }, { status: axiosError.response?.status || 400})
+      const errorMessage = axiosError.response?.data
+        ? 'Invalid email or password'
+        : 'An error occurred.'
+      return json(
+        { error: errorMessage },
+        { status: axiosError.response?.status || 400 }
+      )
     }
-    return json({ error: "Unexpected error occured." }, { status: 500 })
+    return json({ error: 'Unexpected error occured.' }, { status: 500 })
   }
 }
 
-export default function login() {
+export default function Login() {
+  const actionData = useActionData<{ error: string }>()
+  const navigation = useNavigation()
   const [isVisible, setIsVisible] = useState(false)
   const [activeTab, setActiveTab] = useState('login')
   const toggleVisibility = () => setIsVisible(!isVisible)
+  const [inputValue, setInputValue] = useState<LoginProps>({
+    email: '',
+    password: '',
+  })
+  const isSubmitting = navigation.state === 'submitting'
+  const hasError = actionData?.error
+
+  const handleChangeInput = (e: ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target
+    setInputValue((prev) => ({
+      ...prev,
+      [name]: value,
+    }))
+  }
 
   return (
     <div className="flex min-h-screen">
@@ -81,14 +120,17 @@ export default function login() {
                     isRequired
                     label="Email"
                     placeholder="Enter your email"
-                    type="email"
                     name="email"
+                    value={inputValue?.email}
+                    onChange={handleChangeInput}
                   />
                   <Input
                     isRequired
                     label="Password"
                     name="password"
                     placeholder="Enter your password"
+                    value={inputValue?.password}
+                    onChange={handleChangeInput}
                     endContent={
                       <button
                         className="focus:outline-none"
@@ -104,11 +146,21 @@ export default function login() {
                     }
                     type={isVisible ? 'text' : 'password'}
                   />
+                  {!!hasError ? (
+                    <p className="mt-4 text-red-600">{hasError}</p>
+                  ) : (
+                    ''
+                  )}
                   <div className="flex justify-between items-center">
                     <Link href="#" size="sm">
                       Forgot password?
                     </Link>
-                    <Button type="submit" className="bg-light-violet text-white">
+                    <Button
+                      isLoading={isSubmitting}
+                      disabled={isSubmitting}
+                      type="submit"
+                      className="bg-light-violet text-white"
+                    >
                       Sign In
                     </Button>
                   </div>
