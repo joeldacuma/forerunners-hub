@@ -15,7 +15,7 @@ import { Wave } from '~/components'
 import { ActionFunctionArgs, json } from '@remix-run/node'
 import { loginAuthUser } from 'app/api/strapi'
 import { Form } from '@remix-run/react'
-import { loginUserSession } from 'app/utils'
+import { loginUserSession } from 'app/session.server'
 import axios, { AxiosError } from "axios"
 import { ResponseError } from 'app/common/models'
 

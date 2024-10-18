@@ -1,6 +1,6 @@
 import React from 'react'
 import { LoaderFunctionArgs, redirect } from '@remix-run/node'
-import { getUserSession } from '~/utils/session'
+import { getUserSession } from 'app/session.server'
 import { fetchUserInfo } from 'app/api/strapi'
 import { User } from 'app/common/models'
 
