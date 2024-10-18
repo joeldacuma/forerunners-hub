@@ -12,30 +12,6 @@ import {
 } from '@nextui-org/react'
 import { EyeIcon, EyeOffIcon } from 'lucide-react'
 import { Wave } from '~/components'
-import { ActionFunctionArgs, json } from '@remix-run/node'
-import { loginAuthUser } from 'app/api/strapi'
-import { Form } from '@remix-run/react'
-import { loginUserSession } from 'app/utils'
-import axios, { AxiosError } from "axios"
-import { ResponseError } from 'app/common/models'
-
-export const action = async ({ request }: ActionFunctionArgs) => {
-  const formData = await request.formData()
-  const email = formData.get('email') as string
-  const password = formData.get('password') as string
-
-  try {
-    const response = await loginAuthUser(email, password)
-    return loginUserSession(request, response?.jwt)
-  } catch (error) {
-    if (axios.isAxiosError(error)) {
-      const axiosError = error as AxiosError<ResponseError>
-      const errorMessage = axiosError.response?.data.message || "An error occurred."
-      return json({ error: errorMessage }, { status: axiosError.response?.status || 400})
-    }
-    return json({ error: "Unexpected error occured." }, { status: 500 })
-  }
-}
 
 export default function login() {
   const [isVisible, setIsVisible] = useState(false)
@@ -45,11 +21,11 @@ export default function login() {
   return (
     <div className="flex min-h-screen">
       <div className="hidden md:flex md:w-1/2 bg-gradient-to-br from-blue-300 to-blue-500 items-center justify-center">
-        <div
+        <div 
           className="w-3/4 h-3/4 bg-no-repeat bg-center"
           style={{
             backgroundImage: `url('/login.png?height=600&width=600')`,
-            backgroundSize: 'contain',
+            backgroundSize: 'contain'
           }}
           aria-hidden="true"
         />
@@ -72,22 +48,19 @@ export default function login() {
               size="lg"
               aria-label="Auth tabs"
               selectedKey={activeTab}
-              isDisabled // remove when registration is ready
               onSelectionChange={(key) => setActiveTab(key.toString())}
             >
               <Tab key="login" title="LOGIN">
-                <Form method="post" className="flex flex-col gap-4 mt-4">
+                <form className="flex flex-col gap-4 mt-4">
                   <Input
                     isRequired
                     label="Email"
                     placeholder="Enter your email"
                     type="email"
-                    name="email"
                   />
                   <Input
                     isRequired
                     label="Password"
-                    name="password"
                     placeholder="Enter your password"
                     endContent={
                       <button
@@ -108,14 +81,12 @@ export default function login() {
                     <Link href="#" size="sm">
                       Forgot password?
                     </Link>
-                    <Button type="submit" className="bg-light-violet text-white">
-                      Sign In
-                    </Button>
+                    <Button className="bg-light-violet text-white">Sign In</Button>
                   </div>
-                </Form>
+                </form>
               </Tab>
               <Tab key="sign-up" title="REGISTER">
-                <Form method="post" className="flex flex-col gap-4 mt-4">
+                <form className="flex flex-col gap-4 mt-4">
                   <Input
                     isRequired
                     label="Name"
@@ -146,10 +117,8 @@ export default function login() {
                     }
                     type={isVisible ? 'text' : 'password'}
                   />
-                  <Button className="bg-light-violet text-white">
-                    SIGN UP
-                  </Button>
-                </Form>
+                  <Button className="bg-light-violet text-white">SIGN UP</Button>
+                </form>
               </Tab>
             </Tabs>
           </CardBody>
